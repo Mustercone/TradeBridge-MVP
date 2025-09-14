@@ -222,6 +222,7 @@
 /* Standalone Page Layout */
 .main-content.standalone-page {
     margin-left: 0;
+    margin-top: 64px;
     padding: 24px;
     max-width: 100%;
     width: 100%;
