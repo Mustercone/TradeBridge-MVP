@@ -150,22 +150,60 @@
                             </h2>
                         </div>
                         <div class="card-content">
+                            <!-- Upload Tabs -->
+                            <div class="upload-tabs">
+                                <button class="upload-tab active" onclick="switchUploadTab('drag')" id="dragTab">
+                                    <img src="icons/upload.svg" alt="Drag" width="16" height="16">
+                                    Drag & Drop
+                                </button>
+                                <button class="upload-tab" onclick="switchUploadTab('browse')" id="browseTab">
+                                    <img src="icons/file-text.svg" alt="Browse" width="16" height="16">
+                                    Browse Files
+                                </button>
+                            </div>
+                            
+                            <!-- Upload Area -->
                             <div class="upload-area" id="uploadArea">
-                                <input type="file" id="fileUpload" class="file-input" accept=".pdf,.jpg,.png" onchange="handleFileUpload(event)">
-                                <label for="fileUpload" class="upload-label">
-                                    <div class="upload-content">
+                                <input type="file" id="fileUpload" class="file-input" accept=".pdf,.jpg,.png,.jpeg" onchange="handleFileUpload(event)" multiple>
+                                
+                                <!-- Drag & Drop Tab Content -->
+                                <div class="upload-content" id="dragContent">
+                                    <label for="fileUpload" class="upload-label">
                                         <div class="upload-icon">
-                                            <img src="icons/file-text.svg" alt="File" width="32" height="32">
+                                            <img src="icons/upload-large.svg" alt="Upload" width="48" height="48">
                                         </div>
                                         <div class="upload-text">
                                             <p class="upload-title" id="uploadTitle">Drag & drop your invoice here</p>
-                                            <p class="upload-subtitle">PDF, JPG or PNG up to 10MB</p>
+                                            <p class="upload-subtitle">PDF, JPG, PNG or JPEG up to 10MB each</p>
                                         </div>
-                                        <button type="button" class="btn btn-outline" id="uploadBtn">
-                                            <span id="uploadBtnText">Browse Files</span>
+                                    </label>
+                                </div>
+                                
+                                <!-- Browse Files Tab Content -->
+                                <div class="upload-content" id="browseContent" style="display: none;">
+                                    <div class="browse-content">
+                                        <div class="browse-icon">
+                                            <img src="icons/file-text.svg" alt="Browse" width="48" height="48">
+                                        </div>
+                                        <div class="browse-text">
+                                            <p class="browse-title">Select Invoice Files</p>
+                                            <p class="browse-subtitle">Choose PDF, JPG, PNG or JPEG files from your device</p>
+                                        </div>
+                                        <button type="button" class="btn btn-primary" onclick="document.getElementById('fileUpload').click()">
+                                            <img src="icons/file-text.svg" alt="Browse" width="16" height="16">
+                                            Choose Files
                                         </button>
                                     </div>
-                                </label>
+                                </div>
+                                
+                                <!-- File Preview Area -->
+                                <div class="file-preview" id="filePreview" style="display: none;">
+                                    <div class="preview-header">
+                                        <h4>Selected Files</h4>
+                                        <button type="button" class="btn btn-sm btn-outline" onclick="clearFiles()">Clear All</button>
+                                    </div>
+                                    <div class="preview-list" id="previewList"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -372,7 +410,7 @@
 
     <script>
         // State management
-        let uploadedFile = null;
+        let uploadedFiles = [];
         let riskScore = 75;
         let estimatedAPR = 12.5;
 
@@ -424,15 +462,34 @@
             }
         }
 
-        // File upload handling
+        // Upload tab switching
+        function switchUploadTab(tab) {
+            const dragTab = document.getElementById('dragTab');
+            const browseTab = document.getElementById('browseTab');
+            const dragContent = document.getElementById('dragContent');
+            const browseContent = document.getElementById('browseContent');
+            
+            if (tab === 'drag') {
+                dragTab.classList.add('active');
+                browseTab.classList.remove('active');
+                dragContent.style.display = 'block';
+                browseContent.style.display = 'none';
+            } else {
+                browseTab.classList.add('active');
+                dragTab.classList.remove('active');
+                browseContent.style.display = 'block';
+                dragContent.style.display = 'none';
+            }
+        }
+
+        // File upload handling with multiple files support
         function handleFileUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                uploadedFile = file;
-                document.getElementById('uploadTitle').textContent = `Uploaded: ${file.name}`;
-                document.getElementById('uploadBtnText').textContent = 'Change File';
+            const files = event.target.files;
+            if (files && files.length > 0) {
+                uploadedFiles = Array.from(files);
+                showFilePreview(uploadedFiles);
                 
-                // Simulate AI risk assessment
+                // Simulate AI risk assessment for the first file
                 simulateRiskAssessment();
                 
                 // Show risk assessment card
@@ -441,6 +498,73 @@
                 // Enable submit button if amount is filled
                 updateSubmitButton();
             }
+        }
+
+        // Show file preview
+        function showFilePreview(files) {
+            const filePreview = document.getElementById('filePreview');
+            const previewList = document.getElementById('previewList');
+            
+            filePreview.style.display = 'block';
+            previewList.innerHTML = '';
+            
+            files.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-info">
+                        <div class="file-icon">
+                            ${getFileIcon(file.type)}
+                        </div>
+                        <div class="file-details">
+                            <div class="file-name">${file.name}</div>
+                            <div class="file-size">${formatFileSize(file.size)}</div>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <button type="button" class="btn btn-sm btn-outline" onclick="removeFile(${index})">Remove</button>
+                    </div>
+                `;
+                previewList.appendChild(fileItem);
+            });
+        }
+
+        // Get file icon based on type
+        function getFileIcon(fileType) {
+            if (fileType === 'application/pdf') {
+                return '<img src="icons/file-text.svg" alt="PDF" width="20" height="20">';
+            } else if (fileType.startsWith('image/')) {
+                return '<img src="icons/image.svg" alt="Image" width="20" height="20">';
+            } else {
+                return '<img src="icons/file-text.svg" alt="File" width="20" height="20">';
+            }
+        }
+
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Remove individual file
+        function removeFile(index) {
+            uploadedFiles.splice(index, 1);
+            if (uploadedFiles.length === 0) {
+                document.getElementById('filePreview').style.display = 'none';
+                document.getElementById('fileUpload').value = '';
+            } else {
+                showFilePreview(uploadedFiles);
+            }
+        }
+
+        // Clear all files
+        function clearFiles() {
+            uploadedFiles = [];
+            document.getElementById('filePreview').style.display = 'none';
+            document.getElementById('fileUpload').value = '';
         }
 
         function simulateRiskAssessment() {
