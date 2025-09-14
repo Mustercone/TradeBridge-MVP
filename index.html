@@ -292,6 +292,30 @@
     <!-- API Client -->
     <script src="api-client.js"></script>
 
+    <!-- Initialize Remember Me functionality -->
+    <script>
+        // Initialize page on load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user previously chose "Remember Me"
+            const rememberMe = localStorage.getItem('tradebridgeRememberMe');
+            const rememberedEmail = localStorage.getItem('tradebridgeUserEmail');
+            
+            if (rememberMe === 'true' && rememberedEmail) {
+                // Pre-fill the email field
+                const emailField = document.getElementById('loginEmail');
+                if (emailField) {
+                    emailField.value = rememberedEmail;
+                }
+                
+                // Check the remember me checkbox
+                const rememberMeCheckbox = document.getElementById('rememberMe');
+                if (rememberMeCheckbox) {
+                    rememberMeCheckbox.checked = true;
+                }
+            }
+        });
+    </script>
+
     <!-- Sign Up Modal -->
     <div class="modal" id="signupModal">
         <div class="modal-content signup-modal">
@@ -618,6 +642,26 @@
         function switchToSignup() {
             closeLoginModal();
             openSignupModal();
+        }
+
+        // Logout function to clear remembered data
+        function logout() {
+            // Clear remembered login data
+            localStorage.removeItem('tradebridgeRememberMe');
+            localStorage.removeItem('tradebridgeUserEmail');
+            
+            // Clear API tokens if using backend
+            if (window.tradeBridgeAPI) {
+                window.tradeBridgeAPI.logout();
+            }
+            
+            // Clear local user data
+            if (window.userDataManager) {
+                window.userDataManager.clearUserData();
+            }
+            
+            // Redirect to landing page
+            window.location.href = 'index.html';
         }
 
         async function handleLogin() {
