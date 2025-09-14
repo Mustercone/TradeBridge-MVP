@@ -288,6 +288,9 @@
 
     <!-- User Data Manager -->
     <script src="user-data-manager.js"></script>
+    
+    <!-- API Client -->
+    <script src="api-client.js"></script>
 
     <!-- Sign Up Modal -->
     <div class="modal" id="signupModal">
@@ -617,7 +620,7 @@
             openSignupModal();
         }
 
-        function handleLogin() {
+        async function handleLogin() {
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
             const rememberMe = document.getElementById('rememberMe').checked;
@@ -648,42 +651,70 @@
                 return;
             }
 
-            // Check if user exists in stored data
-            if (window.userDataManager && window.userDataManager.hasCompletedSignup()) {
-                const userData = window.userDataManager.getAllUserData();
+            try {
+                // Check if backend is available
+                const backendAvailable = await window.tradeBridgeAPI.checkConnection();
                 
-                if (userData.personalInfo.email === email) {
-                    // Simulate password verification (in real app, this would be server-side)
-                    if (password === 'password123' || password === 'demo') {
-                        // Login successful
-                        window.userDataManager.updateLastLogin();
+                if (backendAvailable) {
+                    // Use backend API for authentication
+                    const loginData = await window.tradeBridgeAPI.login({ email, password });
+                    
+                    // Store login session
+                    if (rememberMe) {
+                        localStorage.setItem('tradebridgeRememberMe', 'true');
+                        localStorage.setItem('tradebridgeUserEmail', email);
+                    }
+                    
+                    showToast('Login successful! Welcome back.', 'success');
+                    
+                    // Close modal and redirect to dashboard
+                    setTimeout(() => {
+                        closeLoginModal();
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                    
+                } else {
+                    // Fallback to local storage authentication
+                    if (window.userDataManager && window.userDataManager.hasCompletedSignup()) {
+                        const userData = window.userDataManager.getAllUserData();
                         
-                        // Store login session
-                        if (rememberMe) {
-                            localStorage.setItem('tradebridgeRememberMe', 'true');
-                            localStorage.setItem('tradebridgeUserEmail', email);
+                        if (userData.personalInfo.email === email) {
+                            // Simulate password verification (in real app, this would be server-side)
+                            if (password === 'password123' || password === 'demo') {
+                                // Login successful
+                                window.userDataManager.updateLastLogin();
+                                
+                                // Store login session
+                                if (rememberMe) {
+                                    localStorage.setItem('tradebridgeRememberMe', 'true');
+                                    localStorage.setItem('tradebridgeUserEmail', email);
+                                }
+                                
+                                showToast('Login successful! Welcome back.', 'success');
+                                
+                                // Close modal and redirect to dashboard
+                                setTimeout(() => {
+                                    closeLoginModal();
+                                    window.location.href = 'dashboard.html';
+                                }, 1000);
+                                
+                                return;
+                            } else {
+                                showLoginFieldError('loginPassword', 'Invalid password');
+                                return;
+                            }
+                        } else {
+                            showLoginFieldError('loginEmail', 'No account found with this email');
+                            return;
                         }
-                        
-                        showToast('Login successful! Welcome back.', 'success');
-                        
-                        // Close modal and redirect to dashboard
-                        setTimeout(() => {
-                            closeLoginModal();
-                            window.location.href = 'dashboard.html';
-                        }, 1000);
-                        
-                        return;
                     } else {
-                        showLoginFieldError('loginPassword', 'Invalid password');
+                        showLoginFieldError('loginEmail', 'No account found. Please sign up first.');
                         return;
                     }
-                } else {
-                    showLoginFieldError('loginEmail', 'No account found with this email');
-                    return;
                 }
-            } else {
-                showLoginFieldError('loginEmail', 'No account found. Please sign up first.');
-                return;
+            } catch (error) {
+                console.error('Login error:', error);
+                showLoginFieldError('loginPassword', error.message || 'Login failed. Please try again.');
             }
         }
 
@@ -873,7 +904,7 @@
             document.getElementById('documentsCount').textContent = `${count} documents uploaded`;
         }
 
-        function submitSignup() {
+        async function submitSignup() {
             if (validateCurrentStep()) {
                 // Collect all form data
                 const personalInfo = {
@@ -888,31 +919,70 @@
                     bvnNumber: document.getElementById('bvnNumber').value
                 };
 
-                // Save user data
-                if (window.userDataManager) {
-                    window.userDataManager.updatePersonalInfo(personalInfo);
-                    window.userDataManager.updateDocuments(documentData);
-                    window.userDataManager.updateVerificationStatus({
-                        status: 'pending',
-                        bvnVerified: false,
-                        accountCreated: true
-                    });
-                    window.userDataManager.setAccountCreated();
-                    window.userDataManager.updateLastLogin();
-                }
-
-                // Simulate account creation
-                showToast('Creating your account...', 'info');
-                
-                setTimeout(() => {
-                    showToast('Account created successfully! Verification in progress.', 'success');
-                    closeSignupModal();
+                try {
+                    // Check if backend is available
+                    const backendAvailable = await window.tradeBridgeAPI.checkConnection();
                     
-                    // Redirect to dashboard after successful signup
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 2000);
-                }, 3000);
+                    if (backendAvailable) {
+                        // Use backend API for registration
+                        const registrationData = {
+                            ...personalInfo,
+                            password: 'password123' // Default password for demo
+                        };
+                        
+                        showToast('Creating your account...', 'info');
+                        
+                        const userData = await window.tradeBridgeAPI.register(registrationData);
+                        
+                        // Save additional data locally
+                        if (window.userDataManager) {
+                            window.userDataManager.updateDocuments(documentData);
+                            window.userDataManager.updateVerificationStatus({
+                                status: 'pending',
+                                bvnVerified: false,
+                                accountCreated: true
+                            });
+                        }
+                        
+                        showToast('Account created successfully! Verification in progress.', 'success');
+                        closeSignupModal();
+                        
+                        // Redirect to dashboard after successful signup
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 2000);
+                        
+                    } else {
+                        // Fallback to local storage
+                        if (window.userDataManager) {
+                            window.userDataManager.updatePersonalInfo(personalInfo);
+                            window.userDataManager.updateDocuments(documentData);
+                            window.userDataManager.updateVerificationStatus({
+                                status: 'pending',
+                                bvnVerified: false,
+                                accountCreated: true
+                            });
+                            window.userDataManager.setAccountCreated();
+                            window.userDataManager.updateLastLogin();
+                        }
+
+                        // Simulate account creation
+                        showToast('Creating your account...', 'info');
+                        
+                        setTimeout(() => {
+                            showToast('Account created successfully! Verification in progress.', 'success');
+                            closeSignupModal();
+                            
+                            // Redirect to dashboard after successful signup
+                            setTimeout(() => {
+                                window.location.href = 'dashboard.html';
+                            }, 2000);
+                        }, 3000);
+                    }
+                } catch (error) {
+                    console.error('Signup error:', error);
+                    showToast(error.message || 'Account creation failed. Please try again.', 'error');
+                }
             }
         }
 
