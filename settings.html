@@ -520,6 +520,9 @@
         </main>
     </div>
 
+    <!-- User Data Manager -->
+    <script src="user-data-manager.js"></script>
+
     <script>
         // State management
         let profile = {
@@ -530,6 +533,34 @@
             phone: "+1 (555) 123-4567",
             country: "United States"
         };
+
+        // Initialize settings with user data
+        function initializeSettings() {
+            if (window.userDataManager && window.userDataManager.hasCompletedSignup()) {
+                const userData = window.userDataManager.getAllUserData();
+                profile = {
+                    firstName: userData.personalInfo.firstName,
+                    lastName: userData.personalInfo.lastName,
+                    email: userData.personalInfo.email,
+                    company: userData.personalInfo.company,
+                    phone: userData.personalInfo.phone,
+                    country: "Nigeria" // Default country
+                };
+                
+                // Update form fields
+                updateSettingsForm();
+            }
+        }
+
+        // Update settings form with user data
+        function updateSettingsForm() {
+            document.getElementById('firstName').value = profile.firstName;
+            document.getElementById('lastName').value = profile.lastName;
+            document.getElementById('email').value = profile.email;
+            document.getElementById('company').value = profile.company;
+            document.getElementById('phone').value = profile.phone;
+            document.getElementById('country').value = profile.country;
+        }
 
         let preferences = {
             language: "en",
@@ -702,6 +733,7 @@
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
+            initializeSettings();
             updateSecurityStatus();
         });
     </script>

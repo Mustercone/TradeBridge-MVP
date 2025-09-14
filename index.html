@@ -286,6 +286,9 @@
         });
     </script>
 
+    <!-- User Data Manager -->
+    <script src="user-data-manager.js"></script>
+
     <!-- Sign Up Modal -->
     <div class="modal" id="signupModal">
         <div class="modal-content signup-modal">
@@ -669,6 +672,32 @@
 
         function submitSignup() {
             if (validateCurrentStep()) {
+                // Collect all form data
+                const personalInfo = {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    company: document.getElementById('company').value
+                };
+
+                const documentData = {
+                    bvnNumber: document.getElementById('bvnNumber').value
+                };
+
+                // Save user data
+                if (window.userDataManager) {
+                    window.userDataManager.updatePersonalInfo(personalInfo);
+                    window.userDataManager.updateDocuments(documentData);
+                    window.userDataManager.updateVerificationStatus({
+                        status: 'pending',
+                        bvnVerified: false,
+                        accountCreated: true
+                    });
+                    window.userDataManager.setAccountCreated();
+                    window.userDataManager.updateLastLogin();
+                }
+
                 // Simulate account creation
                 showToast('Creating your account...', 'info');
                 

@@ -97,7 +97,7 @@
                             <h2 class="profile-name" id="profileName">John Doe</h2>
                             <p class="profile-position">
                                 <img src="icons/building.svg" alt="Building" width="16" height="16">
-                                <span id="profilePosition">Senior Trade Manager</span>
+                                <span id="profileCompany">Global Trade Corp</span>
                             </p>
                             <div class="verification-badge">
                                 <img src="icons/shield.svg" alt="Verified" width="12" height="12">
@@ -300,6 +300,9 @@
             </div>
     </main>
 
+    <!-- User Data Manager -->
+    <script src="user-data-manager.js"></script>
+
     <script>
         // State management
         let isEditing = false;
@@ -313,6 +316,42 @@
             location: "New York, NY",
             bio: "Experienced trade finance professional with over 10 years in international commerce and supply chain management."
         };
+
+        // Initialize profile with user data
+        function initializeProfile() {
+            if (window.userDataManager && window.userDataManager.hasCompletedSignup()) {
+                const userData = window.userDataManager.getAllUserData();
+                profileData = {
+                    firstName: userData.personalInfo.firstName,
+                    lastName: userData.personalInfo.lastName,
+                    email: userData.personalInfo.email,
+                    phone: userData.personalInfo.phone,
+                    company: userData.personalInfo.company,
+                    location: "Lagos, Nigeria", // Default location
+                    bio: "TradeBridge user"
+                };
+                
+                // Update profile display
+                updateProfileDisplay();
+            }
+        }
+
+        // Update profile display
+        function updateProfileDisplay() {
+            document.getElementById('profileName').textContent = `${profileData.firstName} ${profileData.lastName}`;
+            document.getElementById('profileCompany').textContent = profileData.company;
+            document.getElementById('profileEmail').textContent = profileData.email;
+            document.getElementById('profilePhone').textContent = profileData.phone;
+            document.getElementById('profileLocation').textContent = profileData.location;
+            
+            // Update avatar initials
+            const initials = `${profileData.firstName.charAt(0)}${profileData.lastName.charAt(0)}`.toUpperCase();
+            document.querySelector('.avatar-fallback').textContent = initials;
+            document.querySelector('.user-avatar').textContent = initials;
+            
+            // Update user name in header
+            document.querySelector('.user-name').textContent = `${profileData.firstName} ${profileData.lastName}`;
+        }
 
         let preferences = {
             emailNotifications: true,
@@ -456,6 +495,7 @@
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
+            initializeProfile();
             updateProfile();
         });
     </script>
