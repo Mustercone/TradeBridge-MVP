@@ -211,9 +211,48 @@
                     <!-- Invoice Details -->
                     <div class="card">
                         <div class="card-header">
-                            <h2 class="card-title">Invoice Details</h2>
+                            <h2 class="card-title">
+                                <img src="icons/file-text.svg" alt="Invoice" width="20" height="20">
+                                Invoice Details
+                            </h2>
+                            <div class="extraction-status" id="extractionStatus" style="display: none;">
+                                <div class="status-indicator">
+                                    <div class="status-icon">🤖</div>
+                                    <span class="status-text">AI Extraction Complete</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-content">
+                            <!-- Auto-extracted Data Display -->
+                            <div class="extracted-data" id="extractedData" style="display: none;">
+                                <div class="extraction-summary">
+                                    <h4>Extracted Information</h4>
+                                    <div class="extraction-items">
+                                        <div class="extraction-item">
+                                            <span class="item-label">Invoice Number:</span>
+                                            <span class="item-value" id="extractedInvoiceNumber">INV-2024-001</span>
+                                        </div>
+                                        <div class="extraction-item">
+                                            <span class="item-label">Total Amount:</span>
+                                            <span class="item-value" id="extractedAmount">$75,000.00</span>
+                                        </div>
+                                        <div class="extraction-item">
+                                            <span class="item-label">Due Date:</span>
+                                            <span class="item-value" id="extractedDueDate">2024-12-15</span>
+                                        </div>
+                                        <div class="extraction-item">
+                                            <span class="item-label">Buyer:</span>
+                                            <span class="item-value" id="extractedBuyer">Global Trade Corp</span>
+                                        </div>
+                                        <div class="extraction-item">
+                                            <span class="item-label">Seller:</span>
+                                            <span class="item-value" id="extractedSeller">Tech Solutions Ltd</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Manual Input Form -->
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label for="amount">Invoice Amount</label>
@@ -232,6 +271,54 @@
                                 <div class="form-grid">
                                     <input type="text" placeholder="Customer Name" id="customerName">
                                     <input type="text" placeholder="Customer Address" id="customerAddress">
+                                </div>
+                            </div>
+
+                            <!-- Smart Contract Generation -->
+                            <div class="smart-contract-section" id="smartContractSection" style="display: none;">
+                                <div class="contract-header">
+                                    <h4>Smart Contract Generation</h4>
+                                    <button type="button" class="btn btn-primary" onclick="generateSmartContract()">
+                                        <img src="icons/smart-contracts.svg" alt="Generate" width="16" height="16">
+                                        Generate Contract
+                                    </button>
+                                </div>
+                                <div class="contract-preview" id="contractPreview" style="display: none;">
+                                    <div class="contract-details">
+                                        <h5>Trade Agreement Preview</h5>
+                                        <div class="contract-info">
+                                            <div class="contract-item">
+                                                <span class="contract-label">Agreement ID:</span>
+                                                <span class="contract-value" id="contractId">TA-2024-001</span>
+                                            </div>
+                                            <div class="contract-item">
+                                                <span class="contract-label">Amount:</span>
+                                                <span class="contract-value" id="contractAmount">$75,000.00</span>
+                                            </div>
+                                            <div class="contract-item">
+                                                <span class="contract-label">Payment Terms:</span>
+                                                <span class="contract-value" id="contractTerms">Net 30 days</span>
+                                            </div>
+                                            <div class="contract-item">
+                                                <span class="contract-label">Status:</span>
+                                                <span class="contract-value contract-status">Ready for Download</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="contract-actions">
+                                        <button type="button" class="btn btn-outline" onclick="downloadContract('pdf')">
+                                            <img src="icons/file-text.svg" alt="PDF" width="16" height="16">
+                                            Download PDF
+                                        </button>
+                                        <button type="button" class="btn btn-outline" onclick="downloadContract('json')">
+                                            <img src="icons/file-text.svg" alt="JSON" width="16" height="16">
+                                            Download JSON
+                                        </button>
+                                        <button type="button" class="btn btn-primary" onclick="deployContract()">
+                                            <img src="icons/smart-contracts.svg" alt="Deploy" width="16" height="16">
+                                            Deploy to Blockchain
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -489,6 +576,9 @@
                 uploadedFiles = Array.from(files);
                 showFilePreview(uploadedFiles);
                 
+                // Simulate AI invoice data extraction
+                simulateInvoiceExtraction();
+                
                 // Simulate AI risk assessment for the first file
                 simulateRiskAssessment();
                 
@@ -498,6 +588,195 @@
                 // Enable submit button if amount is filled
                 updateSubmitButton();
             }
+        }
+
+        // Simulate AI invoice data extraction
+        function simulateInvoiceExtraction() {
+            // Show extraction status
+            const extractionStatus = document.getElementById('extractionStatus');
+            const extractedData = document.getElementById('extractedData');
+            const smartContractSection = document.getElementById('smartContractSection');
+            
+            // Simulate processing delay
+            setTimeout(() => {
+                extractionStatus.style.display = 'block';
+                extractedData.style.display = 'block';
+                smartContractSection.style.display = 'block';
+                
+                // Auto-populate form fields with extracted data
+                populateFormWithExtractedData();
+                
+                // Show success message
+                showToast('Invoice data extracted successfully!', 'success');
+            }, 2000);
+        }
+
+        // Populate form with extracted data
+        function populateFormWithExtractedData() {
+            const extractedAmount = document.getElementById('extractedAmount').textContent;
+            const extractedDueDate = document.getElementById('extractedDueDate').textContent;
+            const extractedBuyer = document.getElementById('extractedBuyer').textContent;
+            
+            // Populate form fields
+            document.getElementById('amount').value = extractedAmount.replace('$', '').replace(',', '');
+            document.getElementById('dueDate').value = extractedDueDate;
+            document.getElementById('customerName').value = extractedBuyer;
+            
+            // Update financing terms
+            updateFinancingTerms();
+        }
+
+        // Generate smart contract
+        function generateSmartContract() {
+            const contractPreview = document.getElementById('contractPreview');
+            const contractId = document.getElementById('contractId');
+            const contractAmount = document.getElementById('contractAmount');
+            const contractTerms = document.getElementById('contractTerms');
+            
+            // Generate unique contract ID
+            const uniqueId = 'TA-' + Date.now().toString().slice(-6);
+            contractId.textContent = uniqueId;
+            
+            // Set contract details
+            contractAmount.textContent = document.getElementById('extractedAmount').textContent;
+            contractTerms.textContent = 'Net 30 days';
+            
+            // Show contract preview
+            contractPreview.style.display = 'block';
+            
+            // Show success message
+            showToast('Smart contract generated successfully!', 'success');
+        }
+
+        // Download contract
+        function downloadContract(format) {
+            const contractData = {
+                id: document.getElementById('contractId').textContent,
+                amount: document.getElementById('contractAmount').textContent,
+                terms: document.getElementById('contractTerms').textContent,
+                buyer: document.getElementById('extractedBuyer').textContent,
+                seller: document.getElementById('extractedSeller').textContent,
+                dueDate: document.getElementById('extractedDueDate').textContent,
+                invoiceNumber: document.getElementById('extractedInvoiceNumber').textContent,
+                generatedAt: new Date().toISOString(),
+                status: 'Ready for Execution'
+            };
+
+            if (format === 'pdf') {
+                downloadPDFContract(contractData);
+            } else if (format === 'json') {
+                downloadJSONContract(contractData);
+            }
+        }
+
+        // Download PDF contract
+        function downloadPDFContract(data) {
+            // Create a simple PDF-like content
+            const content = `
+                TRADE AGREEMENT
+                ================
+                
+                Agreement ID: ${data.id}
+                Generated: ${new Date().toLocaleDateString()}
+                
+                PARTIES:
+                Buyer: ${data.buyer}
+                Seller: ${data.seller}
+                
+                TERMS:
+                Amount: ${data.amount}
+                Payment Terms: ${data.terms}
+                Due Date: ${data.dueDate}
+                Invoice Number: ${data.invoiceNumber}
+                
+                STATUS: ${data.status}
+                
+                This agreement is generated by TradeBridge's AI system
+                and is ready for blockchain deployment.
+            `;
+            
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${data.id}-Trade-Agreement.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast('Trade agreement downloaded!', 'success');
+        }
+
+        // Download JSON contract
+        function downloadJSONContract(data) {
+            const jsonContent = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonContent], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${data.id}-Contract.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast('Contract JSON downloaded!', 'success');
+        }
+
+        // Deploy contract to blockchain
+        function deployContract() {
+            const contractId = document.getElementById('contractId').textContent;
+            
+            // Simulate blockchain deployment
+            showToast('Deploying contract to blockchain...', 'info');
+            
+            setTimeout(() => {
+                showToast(`Contract ${contractId} deployed successfully!`, 'success');
+                
+                // Update contract status
+                const statusElement = document.querySelector('.contract-status');
+                statusElement.textContent = 'Deployed to Blockchain';
+                statusElement.style.color = '#10B981';
+            }, 3000);
+        }
+
+        // Show toast notification
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 10000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                ${type === 'success' ? 'background: #10B981;' : 
+                  type === 'error' ? 'background: #EF4444;' : 
+                  'background: #3B82F6;'}
+            `;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.transform = 'translateX(0)';
+            }, 100);
+
+            setTimeout(() => {
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
         }
 
         // Show file preview
