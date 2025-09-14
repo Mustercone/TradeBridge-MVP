@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeBridge - Complete Webapp</title>
+    <link rel="stylesheet" href="webapp.css">
+    <script src="sidebar-toggle.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="webapp-body">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <a href="#" class="logo" onclick="navigateToPage('dashboard')">
+                <div class="logo-icon">
+                    <span class="logo-text-small">TB</span>
+                </div>
+                <span class="logo-text">TradeBridge</span>
+            </a>
+            <div class="header-actions">
+                <!-- Language Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleLanguageDropdown()">
+                        <div class="worldwide-icon">🌍</div>
+                        <span>EN</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="languageDropdown">
+                        <div class="dropdown-item" onclick="selectLanguage('en')">
+                            <span>English</span>
+                            <img src="icons/check.svg" alt="Selected" width="16" height="16" class="check-icon">
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('es')">
+                            <span>Español</span>
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('fr')">
+                            <span>Français</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Profile Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleUserDropdown()">
+                        <div class="user-avatar">JD</div>
+                        <span class="user-name">John Doe</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="userDropdown">
+                        <div class="dropdown-item" onclick="navigateToPage('profile')">
+                            <img src="icons/user.svg" alt="Profile" width="16" height="16">
+                            <span>Profile</span>
+                        </div>
+                        <div class="dropdown-item" onclick="navigateToPage('settings')">
+                            <div class="settings-icon-small">⚙️</div>
+                            <span>Settings</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item logout" onclick="logout()">
+                            <img src="icons/logout.svg" alt="Logout" width="16" height="16">
+                            <span>Logout</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="webapp-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" onclick="navigateToPage('dashboard')">
+                    <div class="nav-icon">
+                        <div class="dashboard-icon">📊</div>
+                    </div>
+                    <span>Dashboard</span>
+                    <div class="nav-arrow">
+                        <img src="icons/chevron-right.svg" alt="Arrow" width="16" height="16">
+                    </div>
+                </a>
+                <a href="#" class="nav-item" onclick="navigateToPage('trade-agreement')">
+                    <div class="nav-icon">
+                        <div class="trade-agreement-icon">🤝</div>
+                    </div>
+                    <span>Trade Agreements</span>
+                </a>
+                <a href="#" class="nav-item" onclick="navigateToPage('invoice-financing')">
+                    <div class="nav-icon">
+                        <div class="invoice-financing-icon">🧾</div>
+                    </div>
+                    <span>Invoice Financing</span>
+                </a>
+                <a href="#" class="nav-item" onclick="navigateToPage('wallet')">
+                    <div class="nav-icon">
+                        <div class="wallet-icon">👛</div>
+                    </div>
+                    <span>Wallet</span>
+                </a>
+                <a href="#" class="nav-item" onclick="navigateToPage('shipment-tracker')">
+                    <div class="nav-icon">
+                        <div class="shipment-tracker-icon">🚚</div>
+                    </div>
+                    <span>Shipment Tracker <span class="nav-badge-text">(3)</span></span>
+                </a>
+                <a href="#" class="nav-item" onclick="navigateToPage('notifications')">
+                    <div class="nav-icon">
+                        <div class="notifications-icon">📢</div>
+                    </div>
+                    <span>Notifications <span class="nav-badge-text">(5)</span></span>
+                </a>
+                <a href="#" class="nav-item" onclick="navigateToPage('settings')">
+                    <div class="nav-icon">
+                        <div class="settings-icon">⚙️</div>
+                    </div>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="webapp-main">
+            <div class="webapp-content">
+                <!-- Page content will be loaded here dynamically -->
+                <div id="pageContent">
+                    <!-- Dashboard content will be loaded here by default -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Page Templates (hidden) -->
+    <div id="pageTemplates" style="display: none;">
+        <!-- Dashboard Template -->
+        <div id="dashboardTemplate">
+            <div class="dashboard-content">
+                <!-- Page Header -->
+                <div class="page-header-simple">
+                    <div class="page-header-content">
+                        <div class="page-title-section">
+                            <h1>Dashboard</h1>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn btn-outline">
+                                <img src="icons/refresh.svg" alt="Refresh" width="16" height="16">
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metrics Grid -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <img src="icons/file-text.svg" alt="Agreements" width="24" height="24">
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-number">12</div>
+                            <div class="metric-label">Active Agreements</div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <img src="icons/wallet.svg" alt="Balance" width="24" height="24">
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-number">$45,230</div>
+                            <div class="metric-label">Wallet Balance</div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <img src="icons/package.svg" alt="Shipments" width="24" height="24">
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-number">8</div>
+                            <div class="metric-label">Active Shipments</div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <img src="icons/trending-up.svg" alt="Revenue" width="24" height="24">
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-number">$128,450</div>
+                            <div class="metric-label">Monthly Revenue</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Grid -->
+                <div class="activity-grid">
+                    <div class="activity-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Recent Activity</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <img src="icons/file-text.svg" alt="Agreement" width="16" height="16">
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">New Trade Agreement</div>
+                                    <div class="activity-time">2 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <img src="icons/package.svg" alt="Shipment" width="16" height="16">
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Shipment Delivered</div>
+                                    <div class="activity-time">4 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <img src="icons/wallet.svg" alt="Payment" width="16" height="16">
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Payment Received</div>
+                                    <div class="activity-time">1 day ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="activity-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Quick Actions</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="quick-actions">
+                                <button class="btn btn-primary" onclick="navigateToPage('trade-agreement')">
+                                    <img src="icons/file-text.svg" alt="Agreement" width="16" height="16">
+                                    Create Agreement
+                                </button>
+                                <button class="btn btn-outline" onclick="navigateToPage('invoice-financing')">
+                                    <img src="icons/file-text.svg" alt="Invoice" width="16" height="16">
+                                    Request Financing
+                                </button>
+                                <button class="btn btn-outline" onclick="navigateToPage('wallet')">
+                                    <img src="icons/wallet.svg" alt="Wallet" width="16" height="16">
+                                    View Wallet
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wallet Template -->
+        <div id="walletTemplate">
+            <div class="main-content">
+                <!-- Page Header -->
+                <div class="page-header-simple">
+                    <div class="page-header-content">
+                        <div class="page-title-section">
+                            <h1>Wallet</h1>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn btn-primary">
+                                <img src="icons/plus.svg" alt="Add" width="16" height="16">
+                                Add Funds
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wallet Content -->
+                <div class="wallet-content">
+                    <div class="wallet-grid">
+                        <div class="wallet-card">
+                            <div class="card-header">
+                                <h2 class="card-title">Balance Overview</h2>
+                            </div>
+                            <div class="card-content">
+                                <div class="balance-display">
+                                    <div class="balance-amount">$45,230.00</div>
+                                    <div class="balance-label">Total Balance</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wallet-card">
+                            <div class="card-header">
+                                <h2 class="card-title">Recent Transactions</h2>
+                            </div>
+                            <div class="card-content">
+                                <div class="transaction-item">
+                                    <div class="transaction-icon">
+                                        <img src="icons/arrow-down.svg" alt="Received" width="16" height="16">
+                                    </div>
+                                    <div class="transaction-content">
+                                        <div class="transaction-title">Payment Received</div>
+                                        <div class="transaction-amount positive">+$5,000.00</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications Template -->
+        <div id="notificationsTemplate">
+            <div class="dashboard-content">
+                <!-- Page Header -->
+                <div class="page-header-simple">
+                    <div class="page-header-content">
+                        <div class="page-title-section">
+                            <h1>Notifications</h1>
+                            <div class="unread-badge" id="unreadBadge" style="display: none;">
+                                <span id="unreadCount">0</span> unread
+                            </div>
+                        </div>
+                        <div class="page-actions">
+                            <div class="dropdown-container">
+                                <button class="dropdown-trigger" onclick="toggleFilterDropdown()">
+                                    <img src="icons/filter.svg" alt="Filter" width="16" height="16">
+                                    <span id="filterText">Filter</span>
+                                    <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                                </button>
+                                <div class="dropdown-menu" id="filterDropdown">
+                                    <div class="dropdown-item" onclick="setFilter('all')">
+                                        <span>All Notifications</span>
+                                    </div>
+                                    <div class="dropdown-item" onclick="setFilter('unread')">
+                                        <img src="icons/alert-circle.svg" alt="Unread" width="16" height="16">
+                                        <span>Unread Only</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline" onclick="markAllAsRead()">
+                                <img src="icons/check.svg" alt="Mark all read" width="16" height="16">
+                                Mark All Read
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Content -->
+                <div class="notifications-content">
+                    <div class="notifications-list" id="notificationsList">
+                        <!-- Notifications will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Webapp State Management
+        let currentPage = 'dashboard';
+        let notifications = [
+            {
+                id: 1,
+                title: "Shipment Update",
+                message: "Your shipment #TB-2024-001 has been delivered successfully.",
+                type: "shipment",
+                priority: "high",
+                timestamp: "2 minutes ago",
+                read: false,
+                icon: "🚚"
+            },
+            {
+                id: 2,
+                title: "Payment Received",
+                message: "Payment of $15,000 has been received for invoice #INV-2024-045.",
+                type: "finance",
+                priority: "medium",
+                timestamp: "1 hour ago",
+                read: false,
+                icon: "💰"
+            }
+        ];
+
+        // Navigation Functions
+        function navigateToPage(page) {
+            currentPage = page;
+            
+            // Update active nav item
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.nav-item').classList.add('active');
+            
+            // Load page content
+            loadPageContent(page);
+            
+            // Close any open dropdowns
+            closeAllDropdowns();
+        }
+
+        function loadPageContent(page) {
+            const pageContent = document.getElementById('pageContent');
+            const template = document.getElementById(page + 'Template');
+            
+            if (template) {
+                pageContent.innerHTML = template.innerHTML;
+                
+                // Initialize page-specific functionality
+                if (page === 'notifications') {
+                    initializeNotifications();
+                }
+            } else {
+                // For pages without templates, redirect to individual pages
+                window.location.href = page + '.html';
+            }
+        }
+
+        // Notifications Functions
+        function initializeNotifications() {
+            updateStats();
+            renderNotifications();
+        }
+
+        function toggleFilterDropdown() {
+            const dropdown = document.getElementById('filterDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function setFilter(filter) {
+            const filterText = document.getElementById('filterText');
+            const dropdown = document.getElementById('filterDropdown');
+            
+            switch(filter) {
+                case 'all':
+                    filterText.textContent = 'All Notifications';
+                    break;
+                case 'unread':
+                    filterText.textContent = 'Unread Only';
+                    break;
+            }
+            
+            dropdown.classList.remove('show');
+            renderNotifications();
+        }
+
+        function markAllAsRead() {
+            notifications.forEach(notification => {
+                notification.read = true;
+            });
+            updateStats();
+            renderNotifications();
+        }
+
+        function updateStats() {
+            const unread = notifications.filter(n => !n.read).length;
+            const unreadBadge = document.getElementById('unreadBadge');
+            const unreadCount = document.getElementById('unreadCount');
+            
+            if (unread > 0) {
+                unreadBadge.style.display = 'flex';
+                unreadCount.textContent = unread;
+            } else {
+                unreadBadge.style.display = 'none';
+            }
+        }
+
+        function renderNotifications() {
+            const notificationsList = document.getElementById('notificationsList');
+            
+            if (notifications.length === 0) {
+                notificationsList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <h3>No notifications found</h3>
+                        <p>You're all caught up! Check back later for new updates.</p>
+                    </div>
+                `;
+            } else {
+                notificationsList.innerHTML = notifications.map(notification => `
+                    <div class="notification-card ${notification.read ? 'read' : 'unread'} ${notification.priority}">
+                        <div class="notification-icon">
+                            <div class="notification-emoji">${notification.icon}</div>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-header">
+                                <h3 class="notification-title">${notification.title}</h3>
+                                <div class="notification-meta">
+                                    <span class="notification-time">${notification.timestamp}</span>
+                                    ${!notification.read ? '<div class="unread-indicator"></div>' : ''}
+                                </div>
+                            </div>
+                            <p class="notification-message">${notification.message}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Language Functions
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function selectLanguage(lang) {
+            const dropdown = document.getElementById('languageDropdown');
+            dropdown.classList.remove('show');
+            // Language selection logic here
+        }
+
+        // User Dropdown Functions
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function logout() {
+            // Logout logic here
+            alert('Logout functionality would be implemented here');
+        }
+
+        // Utility Functions
+        function closeAllDropdowns() {
+            document.querySelectorAll('.dropdown-menu').forEach(dropdown => {
+                dropdown.classList.remove('show');
+            });
+        }
+
+        // Close dropdowns when clicking outside
+        window.onclick = function(event) {
+            if (!event.target.closest('.dropdown-container')) {
+                closeAllDropdowns();
+            }
+        }
+
+        // Initialize webapp
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPageContent('dashboard');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeBridge - Trade Finance Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="design-system.css">
+    <script src="sidebar-toggle.js"></script>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="settings.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="app-body">
+    <!-- Dark Mode Toggle -->
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" id="darkModeToggle">
+        <img src="icons/moon.svg" alt="Dark Mode" width="20" height="20" id="darkModeIcon">
+    </button>
+
+    <!-- Landing Page (shown when not authenticated) -->
+    <div id="landingPage" class="page-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <img src="icons/globe.svg" alt="TradeBridge Logo" width="20" height="20">
+                        </div>
+                        <span class="logo-text">TradeBridge</span>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-outline" onclick="openLoginModal()">Log In</button>
+                        <button class="btn btn-primary" onclick="openGetStartedModal()">Get Started</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-background">
+                <div class="hero-image"></div>
+                <div class="hero-gradient"></div>
+            </div>
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        The Future of
+                        <span class="hero-title-accent">Trade Finance</span>
+                    </h1>
+                    <p class="hero-description">
+                        TradeBridge revolutionizes global trade with blockchain technology, smart contracts, 
+                        and DeFi integration. Reduce costs, accelerate settlements, and eliminate risks in 
+                        international trade.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-large" onclick="openGetStartedModal()">
+                            Start Trading Now
+                            <img src="icons/arrow-right.svg" alt="Arrow" width="20" height="20">
+                        </button>
+                        <button class="btn btn-outline btn-large">
+                            Watch Demo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="container">
+                <div class="features-header">
+                    <h2 class="features-title">Everything You Need for Global Trade</h2>
+                    <p class="features-description">
+                        Comprehensive trade finance platform with cutting-edge technology and enterprise-grade security.
+                    </p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <img src="icons/file-text.svg" alt="Smart Trade Agreements" width="24" height="24">
+                        </div>
+                        <h3 class="feature-title">Smart Trade Agreements</h3>
+                        <p class="feature-description">
+                            Create and manage trade agreements with blockchain-powered smart contracts for automatic execution and compliance.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <img src="icons/trending-up.svg" alt="Invoice Financing" width="24" height="24">
+                        </div>
+                        <h3 class="feature-title">Invoice Financing</h3>
+                        <p class="feature-description">
+                            Access instant liquidity through DeFi pools with AI-powered risk assessment and competitive rates.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <img src="icons/wallet.svg" alt="Stablecoin Wallet" width="24" height="24">
+                        </div>
+                        <h3 class="feature-title">Stablecoin Wallet</h3>
+                        <p class="feature-description">
+                            Secure multi-currency wallet supporting major stablecoins for seamless international transactions.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <img src="icons/truck.svg" alt="Shipment Tracking" width="24" height="24">
+                        </div>
+                        <h3 class="feature-title">Shipment Tracking</h3>
+                        <p class="feature-description">
+                            Real-time tracking with customs integration, document management, and automated status updates.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <img src="icons/shield.svg" alt="Enterprise Security" width="24" height="24">
+                        </div>
+                        <h3 class="feature-title">Enterprise Security</h3>
+                        <p class="feature-description">
+                            Bank-grade security with multi-factor authentication, encryption, and comprehensive audit trails.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <img src="icons/globe.svg" alt="Global Network" width="24" height="24">
+                        </div>
+                        <h3 class="feature-title">Global Network</h3>
+                        <p class="feature-description">
+                            Connect with verified traders worldwide through our trusted marketplace and partner network.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="benefits">
+            <div class="container">
+                <div class="benefits-content">
+                    <div class="benefits-text">
+                        <h2 class="benefits-title">Transform Your Trade Operations</h2>
+                        <p class="benefits-description">
+                            Join thousands of businesses already using TradeBridge to streamline their 
+                            international trade operations and unlock new growth opportunities.
+                        </p>
+                        <div class="benefits-list">
+                            <div class="benefit-item">
+                                <img src="icons/check-circle.svg" alt="Check" width="20" height="20">
+                                <span>Reduce transaction costs by up to 80%</span>
+                            </div>
+                            <div class="benefit-item">
+                                <img src="icons/check-circle.svg" alt="Check" width="20" height="20">
+                                <span>Accelerate trade settlements from weeks to hours</span>
+                            </div>
+                            <div class="benefit-item">
+                                <img src="icons/check-circle.svg" alt="Check" width="20" height="20">
+                                <span>Eliminate intermediary risks with smart contracts</span>
+                            </div>
+                            <div class="benefit-item">
+                                <img src="icons/check-circle.svg" alt="Check" width="20" height="20">
+                                <span>Access global liquidity pools 24/7</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-large" onclick="openGetStartedModal()">
+                            Get Started Today
+                            <img src="icons/arrow-right.svg" alt="Arrow" width="20" height="20">
+                        </button>
+                    </div>
+                    <div class="benefits-image">
+                        <div class="image-container">
+                            <div class="image-placeholder">
+                                <img src="icons/globe.svg" alt="Global Trade" width="48" height="48">
+                            </div>
+                        </div>
+                        <div class="image-decoration image-decoration-1"></div>
+                        <div class="image-decoration image-decoration-2"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">$2.5B+</div>
+                        <div class="stat-label">Trade Volume</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">150+</div>
+                        <div class="stat-label">Countries</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">50K+</div>
+                        <div class="stat-label">Active Traders</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta">
+            <div class="container">
+                <div class="cta-content">
+                    <h2 class="cta-title">Ready to Transform Your Trade Finance?</h2>
+                    <p class="cta-description">
+                        Join TradeBridge today and experience the future of international trade.
+                    </p>
+                    <div class="cta-actions">
+                        <button class="btn btn-primary btn-large" onclick="openGetStartedModal()">
+                            Create Free Account
+                            <img src="icons/arrow-right.svg" alt="Arrow" width="20" height="20">
+                        </button>
+                        <button class="btn btn-outline btn-large">
+                            Schedule Demo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <img src="icons/globe.svg" alt="TradeBridge Logo" width="20" height="20">
+                        </div>
+                        <span class="logo-text">TradeBridge</span>
+                    </div>
+                    <div class="footer-links">
+                        <span>© 2025 TradeBridge. All rights reserved.</span>
+                        <a href="#" class="footer-link">Privacy Policy</a>
+                        <a href="#" class="footer-link">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Main App (shown when authenticated) -->
+    <div id="mainApp" class="app-container" style="display: none;">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <a href="#" class="logo" onclick="navigateToScreen('dashboard')">
+                    <div class="logo-icon">
+                        <span class="logo-text-small">TB</span>
+                    </div>
+                    <span class="logo-text">TradeBridge</span>
+                </a>
+                <div class="header-actions">
+                    
+                    <!-- Language Dropdown -->
+                    <div class="dropdown-container">
+                        <button class="dropdown-trigger" onclick="toggleLanguageDropdown()">
+                            <img src="icons/globe.svg" alt="Language" width="16" height="16">
+                            <span>EN</span>
+                            <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                        </button>
+                        <div class="dropdown-menu" id="languageDropdown">
+                            <div class="dropdown-item" onclick="selectLanguage('en')">
+                                <span>English</span>
+                                <img src="icons/check.svg" alt="Selected" width="16" height="16" class="check-icon">
+                            </div>
+                            <div class="dropdown-item" onclick="selectLanguage('es')">
+                                <span>Español</span>
+                            </div>
+                            <div class="dropdown-item" onclick="selectLanguage('fr')">
+                                <span>Français</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- User Profile Dropdown -->
+                    <div class="dropdown-container">
+                        <button class="dropdown-trigger" onclick="toggleUserDropdown()">
+                            <div class="user-avatar">JD</div>
+                            <span class="user-name">John Doe</span>
+                            <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                        </button>
+                        <div class="dropdown-menu" id="userDropdown">
+                            <div class="dropdown-item" onclick="navigateToScreen('profile')">
+                                <img src="icons/user.svg" alt="Profile" width="16" height="16">
+                                <span>Profile</span>
+                            </div>
+                            <div class="dropdown-item" onclick="navigateToScreen('settings')">
+                                <div class="settings-icon-small">⚙️</div>
+                                <span>Settings</span>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-item logout" onclick="logout()">
+                                <img src="icons/logout.svg" alt="Logout" width="16" height="16">
+                                <span>Logout</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <!-- Sidebar -->
+            <aside class="dashboard-sidebar">
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active" onclick="navigateToScreen('dashboard')">
+                        <div class="nav-icon">
+                            <div class="dashboard-icon">📊</div>
+                        </div>
+                        <span>Dashboard</span>
+                        <div class="nav-arrow">
+                            <img src="icons/chevron-right.svg" alt="Arrow" width="16" height="16">
+                        </div>
+                    </a>
+                    <a href="#" class="nav-item" onclick="navigateToScreen('trade-agreement')">
+                        <div class="nav-icon">
+                            <div class="trade-agreement-icon">🤝</div>
+                        </div>
+                        <span>Trade Agreements</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="navigateToScreen('invoice-financing')">
+                        <div class="nav-icon">
+                            <div class="invoice-financing-icon">🧾</div>
+                        </div>
+                        <span>Invoice Financing</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="navigateToScreen('wallet')">
+                        <div class="nav-icon">
+                            <div class="wallet-icon">👛</div>
+                        </div>
+                        <span>Wallet</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="navigateToScreen('shipment-tracker')">
+                        <div class="nav-icon">
+                            <div class="shipment-tracker-icon">🚚</div>
+                        </div>
+                        <span>Shipment Tracker <span class="nav-badge-text">(3)</span></span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="navigateToScreen('notifications')">
+                        <div class="nav-icon">
+                            <div class="notifications-icon">📢</div>
+                        </div>
+                        <span>Notifications <span class="nav-badge-text">(5)</span></span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="navigateToScreen('settings')">
+                        <div class="nav-icon">
+                            <div class="settings-icon">⚙️</div>
+                        </div>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="navigateToScreen('profile')">
+                        <div class="nav-icon">
+                            <img src="icons/user.svg" alt="Profile" width="20" height="20">
+                        </div>
+                        <span>Profile</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="main-content" id="mainContent">
+                <!-- Content will be dynamically loaded here -->
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Welcome Back</h2>
+                <span class="close" onclick="closeLoginModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description">Sign in to your TradeBridge account to continue.</p>
+                <form class="auth-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Get Started Modal -->
+    <div class="modal" id="getStartedModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Your Account</h2>
+                <span class="close" onclick="closeGetStartedModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description">Join TradeBridge and transform your trade finance operations.</p>
+                <form class="auth-form" onsubmit="handleSignUp(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" placeholder="First name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" placeholder="Last name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company</label>
+                        <input type="text" id="company" name="company" placeholder="Company name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" name="password" placeholder="Create a password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // App State
+        let isAuthenticated = false;
+        let activeScreen = 'dashboard';
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDarkMode();
+            checkAuthentication();
+        });
+
+        // Authentication functions
+        function checkAuthentication() {
+            const auth = localStorage.getItem('isAuthenticated');
+            if (auth === 'true') {
+                setIsAuthenticated(true);
+            }
+        }
+
+        function setIsAuthenticated(authenticated) {
+            isAuthenticated = authenticated;
+            localStorage.setItem('isAuthenticated', authenticated.toString());
+            
+            if (authenticated) {
+                document.getElementById('landingPage').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                navigateToScreen('dashboard');
+            } else {
+                document.getElementById('landingPage').style.display = 'block';
+                document.getElementById('mainApp').style.display = 'none';
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                setIsAuthenticated(false);
+            }
+        }
+
+        // Navigation functions
+        function navigateToScreen(screen) {
+            activeScreen = screen;
+            updateSidebar(screen);
+            loadScreenContent(screen);
+        }
+
+        function updateSidebar(screen) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const activeItem = document.querySelector(`[onclick="navigateToScreen('${screen}')"]`);
+            if (activeItem) {
+                activeItem.classList.add('active');
+            }
+        }
+
+        function loadScreenContent(screen) {
+            const mainContent = document.getElementById('mainContent');
+            
+            // Remove existing content
+            mainContent.innerHTML = '';
+            
+            // Load content based on screen
+            switch (screen) {
+                case 'dashboard':
+                    loadDashboardContent(mainContent);
+                    break;
+                case 'trade-agreement':
+                    loadTradeAgreementContent(mainContent);
+                    break;
+                case 'invoice-financing':
+                    loadInvoiceFinancingContent(mainContent);
+                    break;
+                case 'wallet':
+                    loadWalletContent(mainContent);
+                    break;
+                case 'shipment-tracker':
+                    loadShipmentTrackerContent(mainContent);
+                    break;
+                case 'notifications':
+                    loadNotificationsContent(mainContent);
+                    break;
+                case 'settings':
+                    loadSettingsContent(mainContent);
+                    break;
+                case 'profile':
+                    loadProfileContent(mainContent);
+                    break;
+                default:
+                    loadDashboardContent(mainContent);
+            }
+        }
+
+        // Content loading functions (simplified versions)
+        function loadDashboardContent(container) {
+            container.innerHTML = `
+                <div class="dashboard-main">
+                    <div class="dashboard-content">
+                        <div class="page-header">
+                            <h1>Dashboard</h1>
+                            <p>Welcome back, John! Here's what's happening with your trades today.</p>
+                        </div>
+                        
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-header">
+                                    <h3>Total Trade Volume</h3>
+                                    <img src="icons/trending-up.svg" alt="Trending Up" width="20" height="20">
+                                </div>
+                                <div class="metric-value">$2,450,000</div>
+                                <div class="metric-change positive">+12.5% from last month</div>
+                            </div>
+                            
+                            <div class="metric-card">
+                                <div class="metric-header">
+                                    <h3>Active Trades</h3>
+                                    <img src="icons/file-text.svg" alt="File Text" width="20" height="20">
+                                </div>
+                                <div class="metric-value">24</div>
+                                <div class="metric-change">3 new this week</div>
+                            </div>
+                            
+                            <div class="metric-card">
+                                <div class="metric-header">
+                                    <h3>Pending Approvals</h3>
+                                    <img src="icons/clock.svg" alt="Clock" width="20" height="20">
+                                </div>
+                                <div class="metric-value">7</div>
+                                <div class="metric-change">2 urgent</div>
+                            </div>
+                            
+                            <div class="metric-card">
+                                <div class="metric-header">
+                                    <h3>Success Rate</h3>
+                                    <img src="icons/check-circle.svg" alt="Check Circle" width="20" height="20">
+                                </div>
+                                <div class="metric-value">98.2%</div>
+                                <div class="metric-change positive">+0.3% this month</div>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-grid">
+                            <div class="dashboard-card">
+                                <div class="card-header">
+                                    <h2>Recent Activity</h2>
+                                    <button class="btn btn-outline btn-sm">View All</button>
+                                </div>
+                                <div class="activity-list">
+                                    <div class="activity-item">
+                                        <div class="activity-icon">
+                                            <img src="icons/file-text.svg" alt="Trade" width="16" height="16">
+                                        </div>
+                                        <div class="activity-content">
+                                            <h4>Trade Agreement #TA-2024-001</h4>
+                                            <p>Status updated to "In Progress"</p>
+                                            <span class="activity-time">2 hours ago</span>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon">
+                                            <img src="icons/trending-up.svg" alt="Invoice" width="16" height="16">
+                                        </div>
+                                        <div class="activity-content">
+                                            <h4>Invoice Financing Request</h4>
+                                            <p>Approved for $50,000</p>
+                                            <span class="activity-time">4 hours ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="dashboard-card">
+                                <div class="card-header">
+                                    <h2>Quick Actions</h2>
+                                </div>
+                                <div class="quick-actions">
+                                    <button class="action-btn" onclick="navigateToScreen('trade-agreement')">
+                                        <img src="icons/file-text.svg" alt="New Trade" width="20" height="20">
+                                        <span>New Trade Agreement</span>
+                                    </button>
+                                    <button class="action-btn" onclick="navigateToScreen('invoice-financing')">
+                                        <img src="icons/trending-up.svg" alt="Invoice Financing" width="20" height="20">
+                                        <span>Invoice Financing</span>
+                                    </button>
+                                    <button class="action-btn" onclick="navigateToScreen('wallet')">
+                                        <img src="icons/wallet.svg" alt="Wallet" width="20" height="20">
+                                        <span>View Wallet</span>
+                                    </button>
+                                    <button class="action-btn" onclick="navigateToScreen('shipment-tracker')">
+                                        <img src="icons/truck.svg" alt="Track Shipment" width="20" height="20">
+                                        <span>Track Shipment</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadTradeAgreementContent(container) {
+            container.innerHTML = `
+                <div class="main-content">
+                    <div class="page-header">
+                        <div class="header-text">
+                            <h1>Trade Agreement</h1>
+                            <p>Create a new smart contract-based trade agreement</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Agreement Details</h2>
+                        </div>
+                        <div class="card-content">
+                            <p>Trade agreement form content would be loaded here...</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadInvoiceFinancingContent(container) {
+            container.innerHTML = `
+                <div class="main-content">
+                    <div class="page-header">
+                        <div class="header-text">
+                            <h1>Invoice Financing</h1>
+                            <p>Access instant liquidity through DeFi pools</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Upload Invoice</h2>
+                        </div>
+                        <div class="card-content">
+                            <p>Invoice financing form content would be loaded here...</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadWalletContent(container) {
+            container.innerHTML = `
+                <div class="main-content">
+                    <div class="page-header">
+                        <div class="header-text">
+                            <h1>Stablecoin Wallet</h1>
+                            <p>Manage your digital assets for trade finance</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Portfolio Overview</h2>
+                        </div>
+                        <div class="card-content">
+                            <p>Wallet content would be loaded here...</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadShipmentTrackerContent(container) {
+            container.innerHTML = `
+                <div class="main-content">
+                    <div class="page-header">
+                        <div class="header-text">
+                            <h1>Shipment Tracker</h1>
+                            <p>Track your shipments in real-time</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Active Shipments</h2>
+                        </div>
+                        <div class="card-content">
+                            <p>Shipment tracking content would be loaded here...</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadNotificationsContent(container) {
+            container.innerHTML = `
+                <div class="main-content">
+                    <div class="page-header">
+                        <div class="header-text">
+                            <h1>Notifications</h1>
+                            <p>Stay updated with your trade activities</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Recent Notifications</h2>
+                        </div>
+                        <div class="card-content">
+                            <p>Notifications content would be loaded here...</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadSettingsContent(container) {
+            container.innerHTML = `
+                <div class="main-content">
+                    <div class="page-header">
+                        <div class="header-text">
+                            <h1>Settings</h1>
+                            <p>Manage your account settings and preferences</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Account Settings</h2>
+                        </div>
+                        <div class="card-content">
+                            <p>Settings content would be loaded here...</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadProfileContent(container) {
+            container.innerHTML = `
+                <div class="main-content">
+                    <div class="page-header">
+                        <div class="header-text">
+                            <h1>Profile</h1>
+                            <p>Manage your account settings and preferences</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Profile Information</h2>
+                        </div>
+                        <div class="card-content">
+                            <p>Profile content would be loaded here...</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Modal functions
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'block';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function openGetStartedModal() {
+            document.getElementById('getStartedModal').style.display = 'block';
+        }
+
+        function closeGetStartedModal() {
+            document.getElementById('getStartedModal').style.display = 'none';
+        }
+
+        // Form handling
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (email.trim() && password.trim()) {
+                setIsAuthenticated(true);
+                closeLoginModal();
+            } else {
+                alert('Please enter both email and password');
+            }
+        }
+
+        function handleSignUp(event) {
+            event.preventDefault();
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('signupEmail').value;
+            const company = document.getElementById('company').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (firstName.trim() && lastName.trim() && email.trim() && company.trim() && password.trim() && confirmPassword.trim()) {
+                if (password === confirmPassword) {
+                    setIsAuthenticated(true);
+                    closeGetStartedModal();
+                } else {
+                    alert('Passwords do not match');
+                }
+            } else {
+                alert('Please fill in all required fields');
+            }
+        }
+
+        // Dropdown functions
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            userDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            const languageDropdown = document.getElementById('languageDropdown');
+            
+            languageDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function selectLanguage(lang) {
+            const languageSpan = document.querySelector('.dropdown-trigger span');
+            const languageMap = {
+                'en': 'EN',
+                'es': 'ES',
+                'fr': 'FR'
+            };
+            
+            languageSpan.textContent = languageMap[lang];
+            document.getElementById('languageDropdown').classList.remove('show');
+        }
+
+        function toggleNotifications() {
+            navigateToScreen('notifications');
+        }
+
+        // Dark mode functionality
+        function toggleDarkMode() {
+            const body = document.body;
+            const darkModeIcon = document.getElementById('darkModeIcon');
+            const isDark = body.classList.contains('dark');
+            
+            if (isDark) {
+                body.classList.remove('dark');
+                darkModeIcon.src = 'icons/moon.svg';
+                darkModeIcon.alt = 'Dark Mode';
+                localStorage.setItem('darkMode', 'false');
+            } else {
+                body.classList.add('dark');
+                darkModeIcon.src = 'icons/sun.svg';
+                darkModeIcon.alt = 'Light Mode';
+                localStorage.setItem('darkMode', 'true');
+            }
+        }
+
+        function initializeDarkMode() {
+            const isDark = localStorage.getItem('darkMode') === 'true';
+            const darkModeIcon = document.getElementById('darkModeIcon');
+            
+            if (isDark) {
+                document.body.classList.add('dark');
+                darkModeIcon.src = 'icons/sun.svg';
+                darkModeIcon.alt = 'Light Mode';
+            } else {
+                darkModeIcon.src = 'icons/moon.svg';
+                darkModeIcon.alt = 'Dark Mode';
+            }
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const loginModal = document.getElementById('loginModal');
+            const getStartedModal = document.getElementById('getStartedModal');
+            const languageDropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            if (event.target === loginModal) {
+                closeLoginModal();
+            }
+            if (event.target === getStartedModal) {
+                closeGetStartedModal();
+            }
+            if (!event.target.closest('.dropdown-container')) {
+                languageDropdown.classList.remove('show');
+                userDropdown.classList.remove('show');
+            }
+        }
+    </script>
+</body>
+</html>
+

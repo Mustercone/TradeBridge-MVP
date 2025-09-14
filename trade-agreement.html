@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trade Agreement - TradeBridge</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="trade-agreement.css">
+    <script src="loading-toast.js"></script>
+    <script src="form-validation.js"></script>
+    <script src="mobile-optimization.js"></script>
+    <script src="global-search.js"></script>
+    <script src="export-functionality.js"></script>
+    <script src="sidebar-toggle.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <span class="logo-text-small">TB</span>
+                </div>
+                <span class="logo-text">TradeBridge</span>
+            </a>
+            <div class="header-actions">
+                
+                <!-- Language Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleLanguageDropdown()">
+                        <div class="worldwide-icon">🌍</div>
+                        <span>EN</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="languageDropdown">
+                        <div class="dropdown-item" onclick="selectLanguage('en')">
+                            <span>English</span>
+                            <img src="icons/check.svg" alt="Selected" width="16" height="16" class="check-icon">
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('es')">
+                            <span>Español</span>
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('fr')">
+                            <span>Français</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Profile Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleUserDropdown()">
+                        <div class="user-avatar">JD</div>
+                        <span class="user-name">John Doe</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="userDropdown">
+                        <div class="dropdown-item" onclick="navigateToPage('profile')">
+                            <img src="icons/user.svg" alt="Profile" width="16" height="16">
+                            <span>Profile</span>
+                        </div>
+                        <div class="dropdown-item" onclick="navigateToPage('settings')">
+                            <div class="settings-icon-small">⚙️</div>
+                            <span>Settings</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item logout" onclick="logout()">
+                            <img src="icons/logout.svg" alt="Logout" width="16" height="16">
+                            <span>Logout</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="dashboard-icon">📊</div>
+                    </div>
+                    <span>Dashboard</span>
+                </a>
+                <a href="trade-agreement.html" class="nav-item active">
+                    <div class="nav-icon">
+                        <div class="trade-agreement-icon">🤝</div>
+                    </div>
+                    <span>Trade Agreements</span>
+                    <div class="nav-arrow">
+                        <img src="icons/chevron-right.svg" alt="Arrow" width="16" height="16">
+                    </div>
+                </a>
+                <a href="invoice-financing.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="invoice-financing-icon">🧾</div>
+                    </div>
+                    <span>Invoice Financing</span>
+                </a>
+                <a href="wallet.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="wallet-icon">👛</div>
+                    </div>
+                    <span>Wallet</span>
+                </a>
+                <a href="shipment-tracker.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="shipment-tracker-icon">🚚</div>
+                    </div>
+                    <span>Shipment Tracker <span class="nav-badge-text">(3)</span></span>
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="notifications-icon">📢</div>
+                    </div>
+                    <span>Notifications <span class="nav-badge-text">(5)</span></span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="settings-icon">⚙️</div>
+                    </div>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <div class="header-text">
+                    <h1>Trade Agreement</h1>
+                    <p>Create a new smart contract-based trade agreement</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" onclick="refreshData()">
+                        <img src="icons/refresh.svg" alt="Refresh" width="16" height="16">
+                        Refresh
+                    </button>
+                </div>
+            </div>
+
+            <div class="agreement-grid">
+                <!-- Main Form Area -->
+                <div class="main-form-area">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <img src="icons/file-text.svg" alt="File Text" width="20" height="20">
+                                Agreement Details
+                            </h2>
+                        </div>
+                        <div class="card-content">
+                            <form id="agreementForm" class="agreement-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="buyer">Buyer Company *</label>
+                                        <div class="select-wrapper">
+                                            <div class="custom-dropdown" id="buyerDropdown">
+                                                <input type="text" id="buyer" class="dropdown-input" placeholder="Type or select buyer company" autocomplete="off" oninput="filterBuyerOptions(this.value)" onfocus="showBuyerDropdown()" onblur="hideBuyerDropdown()">
+                                                <div class="dropdown-arrow" onclick="toggleBuyerDropdown()">
+                                                    <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                                                </div>
+                                                <div class="dropdown-menu" id="buyerDropdownMenu">
+                                                    <div class="dropdown-item" data-value="acme-corp" onclick="selectBuyerOption('acme-corp', 'ACME Corporation')">ACME Corporation</div>
+                                                    <div class="dropdown-item" data-value="global-trade" onclick="selectBuyerOption('global-trade', 'Global Trade Ltd')">Global Trade Ltd</div>
+                                                    <div class="dropdown-item" data-value="import-export" onclick="selectBuyerOption('import-export', 'Import Export Co')">Import Export Co</div>
+                                                    <div class="dropdown-item" data-value="tech-solutions" onclick="selectBuyerOption('tech-solutions', 'Tech Solutions Inc')">Tech Solutions Inc</div>
+                                                    <div class="dropdown-item" data-value="retail-chain" onclick="selectBuyerOption('retail-chain', 'Retail Chain Corp')">Retail Chain Corp</div>
+                                                </div>
+                                            </div>
+                                            <div class="field-status" id="buyerStatus"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="seller">Seller Company *</label>
+                                        <div class="select-wrapper">
+                                            <div class="custom-dropdown" id="sellerDropdown">
+                                                <input type="text" id="seller" class="dropdown-input" placeholder="Type or select seller company" autocomplete="off" oninput="filterSellerOptions(this.value)" onfocus="showSellerDropdown()" onblur="hideSellerDropdown()">
+                                                <div class="dropdown-arrow" onclick="toggleSellerDropdown()">
+                                                    <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                                                </div>
+                                                <div class="dropdown-menu" id="sellerDropdownMenu">
+                                                    <div class="dropdown-item" data-value="manufacturing-inc" onclick="selectSellerOption('manufacturing-inc', 'Manufacturing Inc')">Manufacturing Inc</div>
+                                                    <div class="dropdown-item" data-value="supplier-co" onclick="selectSellerOption('supplier-co', 'Supplier Co')">Supplier Co</div>
+                                                    <div class="dropdown-item" data-value="producer-ltd" onclick="selectSellerOption('producer-ltd', 'Producer Ltd')">Producer Ltd</div>
+                                                    <div class="dropdown-item" data-value="industrial-corp" onclick="selectSellerOption('industrial-corp', 'Industrial Corp')">Industrial Corp</div>
+                                                    <div class="dropdown-item" data-value="factory-group" onclick="selectSellerOption('factory-group', 'Factory Group Ltd')">Factory Group Ltd</div>
+                                                </div>
+                                            </div>
+                                            <div class="field-status" id="sellerStatus"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="goods">Goods Description *</label>
+                                    <div class="textarea-wrapper">
+                                        <textarea id="goods" placeholder="Describe the goods being traded..." oninput="handleInputChange('goods', this.value)"></textarea>
+                                        <div class="field-status" id="goodsStatus"></div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="quantity">Quantity *</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="quantity" placeholder="e.g., 1000 units" oninput="handleInputChange('quantity', this.value)">
+                                            <div class="field-status" id="quantityStatus"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="price">Total Price *</label>
+                                        <div class="input-wrapper">
+                                            <span class="input-prefix">$</span>
+                                            <input type="number" id="price" placeholder="e.g., 50000" oninput="handleInputChange('price', this.value)">
+                                            <div class="field-status" id="priceStatus"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="currency">Currency</label>
+                                        <div class="select-wrapper">
+                                            <select id="currency" onchange="handleInputChange('currency', this.value)">
+                                                <option value="USD">USD</option>
+                                                <option value="EUR">EUR</option>
+                                                <option value="USDC">USDC</option>
+                                                <option value="USDT">USDT</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="deliveryTerms">Delivery Terms *</label>
+                                        <div class="select-wrapper">
+                                            <select id="deliveryTerms" onchange="handleInputChange('deliveryTerms', this.value)">
+                                                <option value="">Select terms</option>
+                                                <option value="FOB">FOB (Free on Board)</option>
+                                                <option value="CIF">CIF (Cost, Insurance, Freight)</option>
+                                                <option value="DDP">DDP (Delivered Duty Paid)</option>
+                                                <option value="EXW">EXW (Ex Works)</option>
+                                            </select>
+                                            <div class="field-status" id="deliveryTermsStatus"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="deliveryDate">Expected Delivery</label>
+                                        <input type="date" id="deliveryDate" onchange="handleInputChange('deliveryDate', this.value)">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="sidebar-content">
+                    <!-- Smart Contract Preview -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Smart Contract Preview</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="contract-info">
+                                <div class="info-item">
+                                    <span class="info-label">Status:</span>
+                                    <span class="badge draft">Draft</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Contract Type:</span>
+                                    <span class="info-value">Trade Agreement</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Blockchain:</span>
+                                    <span class="info-value">Ethereum</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Est. Gas Fee:</span>
+                                    <span class="info-value">~$25</span>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-outline btn-full" onclick="openContractPreview()">
+                                <img src="icons/eye.svg" alt="Preview" width="16" height="16">
+                                Preview Contract
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Actions</h2>
+                        </div>
+                        <div class="card-content">
+                            <button class="btn btn-primary btn-full" onclick="generateAgreement()">
+                                Generate Agreement
+                            </button>
+                            <button class="btn btn-outline btn-full" onclick="saveDraft()">
+                                <img src="icons/save.svg" alt="Save" width="16" height="16">
+                                Save Draft
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Validation Summary -->
+                    <div class="card" id="validationCard" style="display: none;">
+                        <div class="card-header">
+                            <h2 class="card-title">Validation Errors</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="error-list" id="errorList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Contract Preview Modal -->
+    <div class="modal" id="contractPreviewModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>Smart Contract Terms</h2>
+                <span class="close" onclick="closeContractPreview()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description">Review the detailed terms and conditions of your trade agreement contract.</p>
+                <div class="contract-terms" id="contractTerms">
+                    <!-- Contract terms will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let formData = {
+            buyer: "",
+            seller: "",
+            goods: "",
+            quantity: "",
+            deliveryTerms: "",
+            price: "",
+            currency: "USD",
+            deliveryDate: ""
+        };
+
+        let validationErrors = [];
+
+        // Navigation functions
+        function navigateToPage(page) {
+            window.location.href = page + '.html';
+        }
+
+        function refreshData() {
+            console.log('Refreshing data...');
+        }
+
+        function toggleNotifications() {
+            console.log('Toggle notifications');
+        }
+
+        // Dropdown functionality
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            userDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            const languageDropdown = document.getElementById('languageDropdown');
+            
+            languageDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function selectLanguage(lang) {
+            const languageSpan = document.querySelector('.dropdown-trigger span');
+            const languageMap = {
+                'en': 'EN',
+                'es': 'ES',
+                'fr': 'FR'
+            };
+            
+            languageSpan.textContent = languageMap[lang];
+            document.getElementById('languageDropdown').classList.remove('show');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Enhanced form handling with validation
+        const validationRules = {
+            buyer: ['required'],
+            seller: ['required'],
+            goods: ['required', { minLength: 10 }],
+            quantity: ['required', 'numeric', 'positive'],
+            price: ['required', 'numeric', 'positive'],
+            deliveryDate: ['required', 'date'],
+            paymentTerms: ['required'],
+            buyerEmail: ['required', 'email'],
+            sellerEmail: ['required', 'email']
+        };
+
+        function handleInputChange(field, value) {
+            formData[field] = value;
+            
+            // Clear validation error for this field
+            if (validationErrors.includes(field)) {
+                validationErrors = validationErrors.filter(error => error !== field);
+                updateValidationDisplay();
+            }
+            
+            // Update field status
+            updateFieldStatus(field);
+            
+            // Update contract preview
+            updateContractPreview();
+        }
+
+        function validateForm() {
+            const form = document.getElementById('agreementForm');
+            const result = window.formValidator.validateForm(form, validationRules);
+            
+            if (!result.isValid) {
+                window.formValidator.showFormErrors(form, result.errors);
+                window.showError('Please fix the errors before submitting');
+                return false;
+            }
+            
+            window.formValidator.clearFormErrors(form);
+            return true;
+        }
+
+        function updateFieldStatus(field) {
+            const statusElement = document.getElementById(field + 'Status');
+            const inputElement = document.getElementById(field);
+            
+            if (validationErrors.includes(field)) {
+                statusElement.innerHTML = '<img src="icons/alert-circle.svg" alt="Error" width="16" height="16">';
+                statusElement.className = 'field-status error';
+                inputElement.classList.add('error');
+            } else if (formData[field]) {
+                statusElement.innerHTML = '<img src="icons/check-circle.svg" alt="Success" width="16" height="16">';
+                statusElement.className = 'field-status success';
+                inputElement.classList.remove('error');
+            } else {
+                statusElement.innerHTML = '';
+                statusElement.className = 'field-status';
+                inputElement.classList.remove('error');
+            }
+        }
+
+        function validateForm() {
+            validationErrors = [];
+            
+            if (!formData.buyer) validationErrors.push('buyer');
+            if (!formData.seller) validationErrors.push('seller');
+            if (!formData.goods) validationErrors.push('goods');
+            if (!formData.quantity) validationErrors.push('quantity');
+            if (!formData.deliveryTerms) validationErrors.push('deliveryTerms');
+            if (!formData.price) validationErrors.push('price');
+            
+            updateValidationDisplay();
+            updateFieldStatuses();
+            
+            return validationErrors.length === 0;
+        }
+
+        function updateFieldStatuses() {
+            Object.keys(formData).forEach(field => {
+                updateFieldStatus(field);
+            });
+        }
+
+        function updateValidationDisplay() {
+            const validationCard = document.getElementById('validationCard');
+            const errorList = document.getElementById('errorList');
+            
+            if (validationErrors.length > 0) {
+                validationCard.style.display = 'block';
+                errorList.innerHTML = validationErrors.map(field => 
+                    `<div class="error-item">${getFieldLabel(field)} is required</div>`
+                ).join('');
+            } else {
+                validationCard.style.display = 'none';
+            }
+        }
+
+        function getFieldLabel(field) {
+            const labels = {
+                buyer: 'Buyer Company',
+                seller: 'Seller Company',
+                goods: 'Goods Description',
+                quantity: 'Quantity',
+                deliveryTerms: 'Delivery Terms',
+                price: 'Total Price'
+            };
+            return labels[field] || field;
+        }
+
+        function generateAgreement() {
+            if (!validateForm()) {
+                return;
+            }
+
+            // Show loading state
+            window.showLoading('Generating agreement...');
+            
+            // Simulate API call
+            setTimeout(() => {
+                window.hideLoading();
+                window.showSuccess('Agreement generated successfully!', 3000);
+                
+                // Clear form after successful generation
+                setTimeout(() => {
+                    if (confirm('Would you like to create another agreement?')) {
+                        document.getElementById('agreementForm').reset();
+                        window.formValidator.clearFormErrors(document.getElementById('agreementForm'));
+                        formData = {};
+                        updateContractPreview();
+                    }
+                }, 2000);
+            }, 2000);
+        }
+
+        function saveDraft() {
+            try {
+                // Save form data to localStorage
+                localStorage.setItem('tradeAgreementDraft', JSON.stringify(formData));
+                window.showSuccess('Draft saved successfully!', 2000);
+            } catch (error) {
+                window.showError('Failed to save draft. Please try again.');
+            }
+        }
+
+        function loadDraft() {
+            const savedDraft = localStorage.getItem('tradeAgreementDraft');
+            if (savedDraft) {
+                formData = JSON.parse(savedDraft);
+                // Populate form fields
+                Object.keys(formData).forEach(field => {
+                    const element = document.getElementById(field);
+                    if (element) {
+                        element.value = formData[field];
+                        updateFieldStatus(field);
+                    }
+                });
+                updateContractPreview();
+            }
+        }
+
+        function openContractPreview() {
+            updateContractPreview();
+            document.getElementById('contractPreviewModal').style.display = 'block';
+        }
+
+        function closeContractPreview() {
+            document.getElementById('contractPreviewModal').style.display = 'none';
+        }
+
+        function updateContractPreview() {
+            const contractTerms = document.getElementById('contractTerms');
+            contractTerms.innerHTML = `
+                <div class="contract-article">
+                    <h4>Article 1: Parties</h4>
+                    <p>This agreement is between ${formData.buyer || '[Buyer]'} (Buyer) and ${formData.seller || '[Seller]'} (Seller).</p>
+                </div>
+                <div class="contract-article">
+                    <h4>Article 2: Goods</h4>
+                    <p>Seller agrees to sell and deliver ${formData.quantity || '[Quantity]'} of ${formData.goods || '[Goods Description]'}.</p>
+                </div>
+                <div class="contract-article">
+                    <h4>Article 3: Payment</h4>
+                    <p>Total contract value: ${formData.price ? `$${formData.price}` : '[Amount]'} ${formData.currency || 'USD'}.<br>
+                    Payment terms: 30% advance, 70% on delivery confirmation.</p>
+                </div>
+                <div class="contract-article">
+                    <h4>Article 4: Delivery</h4>
+                    <p>Delivery terms: ${formData.deliveryTerms || '[Delivery Terms]'}.<br>
+                    Expected delivery: ${formData.deliveryDate || '[Date]'}.</p>
+                </div>
+            `;
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            const languageDropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            if (!event.target.closest('.dropdown-container')) {
+                languageDropdown.classList.remove('show');
+                userDropdown.classList.remove('show');
+            }
+        }
+
+        // Custom Dropdown Functions for Buyer Company
+        function showBuyerDropdown() {
+            const dropdown = document.getElementById('buyerDropdown');
+            dropdown.classList.add('open');
+        }
+
+        function hideBuyerDropdown() {
+            // Delay hiding to allow clicking on dropdown items
+            setTimeout(() => {
+                const dropdown = document.getElementById('buyerDropdown');
+                dropdown.classList.remove('open');
+            }, 150);
+        }
+
+        function toggleBuyerDropdown() {
+            const dropdown = document.getElementById('buyerDropdown');
+            dropdown.classList.toggle('open');
+        }
+
+        function filterBuyerOptions(searchTerm) {
+            const dropdownMenu = document.getElementById('buyerDropdownMenu');
+            const items = dropdownMenu.querySelectorAll('.dropdown-item');
+            
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(searchTerm.toLowerCase())) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+            
+            // Show dropdown when typing
+            if (searchTerm.length > 0) {
+                showBuyerDropdown();
+            }
+        }
+
+        function selectBuyerOption(value, text) {
+            const input = document.getElementById('buyer');
+            input.value = text;
+            handleInputChange('buyer', value);
+            hideBuyerDropdown();
+        }
+
+        // Custom Dropdown Functions for Seller Company
+        function showSellerDropdown() {
+            const dropdown = document.getElementById('sellerDropdown');
+            dropdown.classList.add('open');
+        }
+
+        function hideSellerDropdown() {
+            // Delay hiding to allow clicking on dropdown items
+            setTimeout(() => {
+                const dropdown = document.getElementById('sellerDropdown');
+                dropdown.classList.remove('open');
+            }, 150);
+        }
+
+        function toggleSellerDropdown() {
+            const dropdown = document.getElementById('sellerDropdown');
+            dropdown.classList.toggle('open');
+        }
+
+        function filterSellerOptions(searchTerm) {
+            const dropdownMenu = document.getElementById('sellerDropdownMenu');
+            const items = dropdownMenu.querySelectorAll('.dropdown-item');
+            
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(searchTerm.toLowerCase())) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+            
+            // Show dropdown when typing
+            if (searchTerm.length > 0) {
+                showSellerDropdown();
+            }
+        }
+
+        function selectSellerOption(value, text) {
+            const input = document.getElementById('seller');
+            input.value = text;
+            handleInputChange('seller', value);
+            hideSellerDropdown();
+        }
+
+        // Load draft on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDraft();
+        });
+    </script>
+</body>
+</html>

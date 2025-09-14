@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Financing - TradeBridge</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="invoice-financing.css">
+    <script src="sidebar-toggle.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <span class="logo-text-small">TB</span>
+                </div>
+                <span class="logo-text">TradeBridge</span>
+            </a>
+            <div class="header-actions">
+                
+                <!-- Language Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleLanguageDropdown()">
+                        <div class="worldwide-icon">🌍</div>
+                        <span>EN</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="languageDropdown">
+                        <div class="dropdown-item" onclick="selectLanguage('en')">
+                            <span>English</span>
+                            <img src="icons/check.svg" alt="Selected" width="16" height="16" class="check-icon">
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('es')">
+                            <span>Español</span>
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('fr')">
+                            <span>Français</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Profile Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleUserDropdown()">
+                        <div class="user-avatar">JD</div>
+                        <span class="user-name">John Doe</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="userDropdown">
+                        <div class="dropdown-item" onclick="navigateToPage('profile')">
+                            <img src="icons/user.svg" alt="Profile" width="16" height="16">
+                            <span>Profile</span>
+                        </div>
+                        <div class="dropdown-item" onclick="navigateToPage('settings')">
+                            <div class="settings-icon-small">⚙️</div>
+                            <span>Settings</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item logout" onclick="logout()">
+                            <img src="icons/logout.svg" alt="Logout" width="16" height="16">
+                            <span>Logout</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="dashboard-icon">📊</div>
+                    </div>
+                    <span>Dashboard</span>
+                </a>
+                <a href="trade-agreement.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="trade-agreement-icon">🤝</div>
+                    </div>
+                    <span>Trade Agreements</span>
+                </a>
+                <a href="invoice-financing.html" class="nav-item active">
+                    <div class="nav-icon">
+                        <div class="invoice-financing-icon">🧾</div>
+                    </div>
+                    <span>Invoice Financing</span>
+                    <div class="nav-arrow">
+                        <img src="icons/chevron-right.svg" alt="Arrow" width="16" height="16">
+                    </div>
+                </a>
+                <a href="wallet.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="wallet-icon">👛</div>
+                    </div>
+                    <span>Wallet</span>
+                </a>
+                <a href="shipment-tracker.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="shipment-tracker-icon">🚚</div>
+                    </div>
+                    <span>Shipment Tracker <span class="nav-badge-text">(3)</span></span>
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="notifications-icon">📢</div>
+                    </div>
+                    <span>Notifications <span class="nav-badge-text">(5)</span></span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="settings-icon">⚙️</div>
+                    </div>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <div class="header-text">
+                    <h1>Invoice Financing</h1>
+                    <p>Get instant financing for your trade invoices using DeFi pools</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" onclick="refreshData()">
+                        <img src="icons/refresh.svg" alt="Refresh" width="16" height="16">
+                        Refresh
+                    </button>
+                </div>
+            </div>
+
+            <div class="invoice-grid">
+                <!-- Main Content Area -->
+                <div class="main-content-area">
+                    <!-- Upload Section -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <img src="icons/upload.svg" alt="Upload" width="20" height="20">
+                                Invoice Upload
+                            </h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="upload-area" id="uploadArea">
+                                <input type="file" id="fileUpload" class="file-input" accept=".pdf,.jpg,.png" onchange="handleFileUpload(event)">
+                                <label for="fileUpload" class="upload-label">
+                                    <div class="upload-content">
+                                        <div class="upload-icon">
+                                            <img src="icons/file-text.svg" alt="File" width="32" height="32">
+                                        </div>
+                                        <div class="upload-text">
+                                            <p class="upload-title" id="uploadTitle">Drag & drop your invoice here</p>
+                                            <p class="upload-subtitle">PDF, JPG or PNG up to 10MB</p>
+                                        </div>
+                                        <button type="button" class="btn btn-outline" id="uploadBtn">
+                                            <span id="uploadBtnText">Browse Files</span>
+                                        </button>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Invoice Details -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Invoice Details</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="amount">Invoice Amount</label>
+                                    <div class="input-wrapper">
+                                        <span class="input-prefix">$</span>
+                                        <input type="number" id="amount" placeholder="e.g., 50000" oninput="updateFinancingTerms()">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dueDate">Due Date</label>
+                                    <input type="date" id="dueDate" onchange="updateFinancingTerms()">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Customer Information</label>
+                                <div class="form-grid">
+                                    <input type="text" placeholder="Customer Name" id="customerName">
+                                    <input type="text" placeholder="Customer Address" id="customerAddress">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Risk Assessment -->
+                    <div class="card" id="riskAssessmentCard" style="display: none;">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <img src="icons/shield.svg" alt="Shield" width="20" height="20">
+                                AI Risk Assessment
+                            </h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="risk-score-section">
+                                <div class="risk-score-header">
+                                    <span class="risk-label">Risk Score</span>
+                                    <span class="risk-value" id="riskValue">75/100 - Low Risk</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progressFill" style="width: 75%"></div>
+                                </div>
+                            </div>
+
+                            <div class="risk-factors">
+                                <div class="risk-factor">
+                                    <div class="factor-icon green">
+                                        <img src="icons/trending-up.svg" alt="Trending Up" width="24" height="24">
+                                    </div>
+                                    <div class="factor-content">
+                                        <p class="factor-label">Payment History</p>
+                                        <p class="factor-value">Excellent</p>
+                                    </div>
+                                </div>
+                                <div class="risk-factor">
+                                    <div class="factor-icon blue">
+                                        <img src="icons/shield.svg" alt="Shield" width="24" height="24">
+                                    </div>
+                                    <div class="factor-content">
+                                        <p class="factor-label">Credit Rating</p>
+                                        <p class="factor-value">A+</p>
+                                    </div>
+                                </div>
+                                <div class="risk-factor">
+                                    <div class="factor-icon yellow">
+                                        <img src="icons/alert-triangle.svg" alt="Alert" width="24" height="24">
+                                    </div>
+                                    <div class="factor-content">
+                                        <p class="factor-label">Industry Risk</p>
+                                        <p class="factor-value">Low</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="sidebar-content">
+                    <!-- Financing Terms -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Financing Terms</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="terms-list">
+                                <div class="term-item">
+                                    <span class="term-label">Financing Amount:</span>
+                                    <span class="term-value" id="financingAmount">$0</span>
+                                </div>
+                                <div class="term-item">
+                                    <span class="term-label">Advance Rate:</span>
+                                    <span class="term-value">85%</span>
+                                </div>
+                                <div class="term-item">
+                                    <span class="term-label">Estimated APR:</span>
+                                    <span class="term-value" id="estimatedAPR">12.5%</span>
+                                </div>
+                                <div class="term-item">
+                                    <span class="term-label">Processing Fee:</span>
+                                    <span class="term-value">2.5%</span>
+                                </div>
+                                <div class="term-item">
+                                    <span class="term-label">Funding Time:</span>
+                                    <span class="term-value">24-48 hours</span>
+                                </div>
+                            </div>
+                            <div class="terms-divider"></div>
+                            <div class="term-item highlight">
+                                <span class="term-label">You Receive:</span>
+                                <span class="term-value green" id="youReceive">$0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DeFi Pool Info -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">DeFi Pool Info</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="pool-stats">
+                                <div class="pool-stat">
+                                    <span class="stat-label">Pool TVL:</span>
+                                    <span class="stat-value">$12.4M</span>
+                                </div>
+                                <div class="pool-stat">
+                                    <span class="stat-label">Available Liquidity:</span>
+                                    <span class="stat-value">$8.9M</span>
+                                </div>
+                                <div class="pool-stat">
+                                    <span class="stat-label">Pool Utilization:</span>
+                                    <span class="stat-value">72%</span>
+                                </div>
+                                <div class="pool-stat">
+                                    <span class="stat-label">Average Pool APY:</span>
+                                    <span class="stat-value">15.2%</span>
+                                </div>
+                            </div>
+                            <div class="insurance-badge">
+                                <img src="icons/shield.svg" alt="Shield" width="16" height="16">
+                                <span>Insurance Protected</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Actions</h2>
+                        </div>
+                        <div class="card-content">
+                            <button class="btn btn-primary btn-full" id="submitBtn" onclick="openConfirmationModal()" disabled>
+                                Submit to DeFi Pool
+                            </button>
+                            <button class="btn btn-outline btn-full" onclick="viewTerms()">
+                                View Terms & Conditions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirm Financing Request</h2>
+                <span class="close" onclick="closeConfirmationModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description">Please review and confirm the details of your financing request before submitting to the DeFi pool.</p>
+                <div class="confirmation-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Invoice Amount:</span>
+                        <span class="detail-value" id="confirmAmount">$0</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">You'll Receive:</span>
+                        <span class="detail-value green" id="confirmReceive">$0</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">APR:</span>
+                        <span class="detail-value" id="confirmAPR">0%</span>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-primary" onclick="confirmSubmission()">Confirm</button>
+                    <button class="btn btn-outline" onclick="closeConfirmationModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let uploadedFile = null;
+        let riskScore = 75;
+        let estimatedAPR = 12.5;
+
+        // Navigation functions
+        function navigateToPage(page) {
+            window.location.href = page + '.html';
+        }
+
+        function refreshData() {
+            console.log('Refreshing data...');
+        }
+
+        function toggleNotifications() {
+            console.log('Toggle notifications');
+        }
+
+        // Dropdown functionality
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            userDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            const languageDropdown = document.getElementById('languageDropdown');
+            
+            languageDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function selectLanguage(lang) {
+            const languageSpan = document.querySelector('.dropdown-trigger span');
+            const languageMap = {
+                'en': 'EN',
+                'es': 'ES',
+                'fr': 'FR'
+            };
+            
+            languageSpan.textContent = languageMap[lang];
+            document.getElementById('languageDropdown').classList.remove('show');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // File upload handling
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                uploadedFile = file;
+                document.getElementById('uploadTitle').textContent = `Uploaded: ${file.name}`;
+                document.getElementById('uploadBtnText').textContent = 'Change File';
+                
+                // Simulate AI risk assessment
+                simulateRiskAssessment();
+                
+                // Show risk assessment card
+                document.getElementById('riskAssessmentCard').style.display = 'block';
+                
+                // Enable submit button if amount is filled
+                updateSubmitButton();
+            }
+        }
+
+        function simulateRiskAssessment() {
+            // Simulate random risk score between 60-90
+            riskScore = Math.floor(Math.random() * 30) + 60;
+            estimatedAPR = riskScore >= 70 ? 8.5 : riskScore >= 40 ? 12.5 : 18.0;
+            
+            updateRiskDisplay();
+            updateFinancingTerms();
+        }
+
+        function updateRiskDisplay() {
+            const riskValue = document.getElementById('riskValue');
+            const progressFill = document.getElementById('progressFill');
+            
+            let riskLabel = 'Low Risk';
+            let riskColor = 'green';
+            
+            if (riskScore >= 70) {
+                riskLabel = 'Low Risk';
+                riskColor = 'green';
+            } else if (riskScore >= 40) {
+                riskLabel = 'Medium Risk';
+                riskColor = 'yellow';
+            } else {
+                riskLabel = 'High Risk';
+                riskColor = 'red';
+            }
+            
+            riskValue.textContent = `${riskScore}/100 - ${riskLabel}`;
+            riskValue.className = `risk-value ${riskColor}`;
+            progressFill.style.width = `${riskScore}%`;
+            progressFill.className = `progress-fill ${riskColor}`;
+        }
+
+        function updateFinancingTerms() {
+            const amount = parseFloat(document.getElementById('amount').value) || 0;
+            const financingAmount = amount * 0.85;
+            const processingFee = financingAmount * 0.025;
+            const youReceive = financingAmount - processingFee;
+            
+            document.getElementById('financingAmount').textContent = `$${financingAmount.toLocaleString()}`;
+            document.getElementById('estimatedAPR').textContent = `${estimatedAPR}%`;
+            document.getElementById('youReceive').textContent = `$${youReceive.toLocaleString()}`;
+            
+            updateSubmitButton();
+        }
+
+        function updateSubmitButton() {
+            const amount = document.getElementById('amount').value;
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (uploadedFile && amount) {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
+        }
+
+        function openConfirmationModal() {
+            const amount = parseFloat(document.getElementById('amount').value) || 0;
+            const financingAmount = amount * 0.85;
+            const processingFee = financingAmount * 0.025;
+            const youReceive = financingAmount - processingFee;
+            
+            document.getElementById('confirmAmount').textContent = `$${amount.toLocaleString()}`;
+            document.getElementById('confirmReceive').textContent = `$${youReceive.toLocaleString()}`;
+            document.getElementById('confirmAPR').textContent = `${estimatedAPR}%`;
+            
+            document.getElementById('confirmationModal').style.display = 'block';
+        }
+
+        function closeConfirmationModal() {
+            document.getElementById('confirmationModal').style.display = 'none';
+        }
+
+        function confirmSubmission() {
+            alert('Financing request submitted successfully! You will receive funds within 24-48 hours.');
+            closeConfirmationModal();
+        }
+
+        function viewTerms() {
+            alert('Terms & Conditions would open here');
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            const languageDropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            if (!event.target.closest('.dropdown-container')) {
+                languageDropdown.classList.remove('show');
+                userDropdown.classList.remove('show');
+            }
+        }
+
+        // Drag and drop functionality
+        const uploadArea = document.getElementById('uploadArea');
+        
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        });
+        
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const fileInput = document.getElementById('fileUpload');
+                fileInput.files = files;
+                handleFileUpload({ target: { files: files } });
+            }
+        });
+    </script>
+</body>
+</html>

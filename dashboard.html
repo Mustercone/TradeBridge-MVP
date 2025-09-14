@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeBridge Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="design-system.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="loading-toast.js"></script>
+    <script src="mobile-optimization.js"></script>
+    <script src="global-search.js"></script>
+    <script src="export-functionality.js"></script>
+    <script src="realtime-updates.js"></script>
+    <script src="sidebar-toggle.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <span class="logo-text-small">TB</span>
+                </div>
+                <span class="logo-text">TradeBridge</span>
+            </a>
+            <div class="header-actions">
+                
+                <!-- Language Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleLanguageDropdown()">
+                        <div class="worldwide-icon">🌍</div>
+                        <span>EN</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="languageDropdown">
+                        <div class="dropdown-item" onclick="selectLanguage('en')">
+                            <span>English</span>
+                            <img src="icons/check.svg" alt="Selected" width="16" height="16" class="check-icon">
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('es')">
+                            <span>Español</span>
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('fr')">
+                            <span>Français</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Profile Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleUserDropdown()">
+                        <div class="user-avatar">JD</div>
+                        <span class="user-name">John Doe</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="userDropdown">
+                        <div class="dropdown-item" onclick="navigateToPage('profile')">
+                            <img src="icons/user.svg" alt="Profile" width="16" height="16">
+                            <span>Profile</span>
+                        </div>
+                        <div class="dropdown-item" onclick="navigateToPage('settings')">
+                            <div class="settings-icon-small">⚙️</div>
+                            <span>Settings</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item logout" onclick="logout()">
+                            <img src="icons/logout.svg" alt="Logout" width="16" height="16">
+                            <span>Logout</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <div class="nav-icon">
+                        <div class="dashboard-icon">📊</div>
+                    </div>
+                    <span>Dashboard</span>
+                    <div class="nav-arrow">
+                        <img src="icons/chevron-right.svg" alt="Arrow" width="16" height="16">
+                    </div>
+                </a>
+                <a href="trade-agreement.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="trade-agreement-icon">🤝</div>
+                    </div>
+                    <span>Trade Agreements</span>
+                </a>
+                <a href="invoice-financing.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="invoice-financing-icon">🧾</div>
+                    </div>
+                    <span>Invoice Financing</span>
+                </a>
+                <a href="wallet.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="wallet-icon">👛</div>
+                    </div>
+                    <span>Wallet</span>
+                </a>
+                <a href="shipment-tracker.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="shipment-tracker-icon">🚚</div>
+                    </div>
+                    <span>Shipment Tracker <span class="nav-badge-text">(3)</span></span>
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="notifications-icon">📢</div>
+                    </div>
+                    <span>Notifications <span class="nav-badge-text">(5)</span></span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="settings-icon">⚙️</div>
+                    </div>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="dashboard-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <div class="header-text">
+                        <h1>Dashboard</h1>
+                        <p>Welcome back, John. Here's your trade overview.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-outline" onclick="refreshData()">
+                            <img src="icons/refresh.svg" alt="Refresh" width="16" height="16">
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Metrics Grid -->
+                <div class="metrics-grid">
+                    <div class="metric-card" onclick="navigateToPage('shipment-tracker')">
+                        <div class="metric-header">
+                            <h3>Active Shipments</h3>
+                            <div class="metric-icon blue">
+                                <img src="icons/package.svg" alt="Package" width="20" height="20">
+                            </div>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-value">24</div>
+                            <div class="metric-subtitle">3 arriving today</div>
+                        </div>
+                        <div class="metric-trend positive">
+                            <img src="icons/trending-up.svg" alt="Trending Up" width="12" height="12">
+                            <span>+12%</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card" onclick="navigateToPage('wallet')">
+                        <div class="metric-header">
+                            <h3>Wallet Balance</h3>
+                            <div class="metric-icon green">
+                                <div class="wallet-balance-icon">💰</div>
+                            </div>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-value">$125,480</div>
+                            <div class="metric-subtitle">USDC + USDT</div>
+                        </div>
+                        <div class="metric-trend positive">
+                            <img src="icons/trending-up.svg" alt="Trending Up" width="12" height="12">
+                            <span>+5.2%</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card" onclick="navigateToPage('invoice-financing')">
+                        <div class="metric-header">
+                            <h3>Financed Invoices</h3>
+                            <div class="metric-icon purple">
+                                <img src="icons/file-text.svg" alt="File Text" width="20" height="20">
+                            </div>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-value">8</div>
+                            <div class="metric-subtitle">$89,200 active</div>
+                        </div>
+                        <div class="metric-trend positive">
+                            <img src="icons/trending-up.svg" alt="Trending Up" width="12" height="12">
+                            <span>+3</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions-card">
+                    <div class="card-header">
+                        <h2>Quick Actions</h2>
+                        <p>Streamline your trade operations</p>
+                    </div>
+                    <div class="quick-actions-grid">
+                        <button class="quick-action-btn primary" onclick="navigateToPage('trade-agreement')">
+                            <div class="action-icon">
+                                <img src="icons/plus.svg" alt="Plus" width="24" height="24">
+                            </div>
+                            <span>Create Agreement</span>
+                        </button>
+                        <button class="quick-action-btn" onclick="navigateToPage('invoice-financing')">
+                            <div class="action-icon">
+                                <img src="icons/credit-card.svg" alt="Credit Card" width="24" height="24">
+                            </div>
+                            <span>Request Financing</span>
+                        </button>
+                        <button class="quick-action-btn" onclick="navigateToPage('wallet')">
+                            <div class="action-icon">
+                                <img src="icons/send.svg" alt="Send" width="24" height="24">
+                            </div>
+                            <span>Send Payment</span>
+                        </button>
+                        <button class="quick-action-btn" onclick="navigateToPage('shipment-tracker')">
+                            <div class="action-icon">
+                                <img src="icons/map-pin.svg" alt="Map Pin" width="24" height="24">
+                            </div>
+                            <span>Track Shipment</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Grid -->
+                <div class="activity-grid">
+                    <!-- Recent Shipments -->
+                    <div class="activity-card">
+                        <div class="card-header">
+                            <h2>Recent Shipments</h2>
+                            <a href="shipment-tracker.html" class="view-all-link">View All</a>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-item">
+                                <div class="activity-info">
+                                    <div class="activity-title">SH-001</div>
+                                    <div class="activity-subtitle">Hamburg, DE</div>
+                                </div>
+                                <div class="activity-status">
+                                    <span class="status-badge in-transit">In Transit</span>
+                                    <div class="activity-meta">Dec 15</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-info">
+                                    <div class="activity-title">SH-002</div>
+                                    <div class="activity-subtitle">Shanghai, CN</div>
+                                </div>
+                                <div class="activity-status">
+                                    <span class="status-badge customs">Customs</span>
+                                    <div class="activity-meta">Dec 18</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-info">
+                                    <div class="activity-title">SH-003</div>
+                                    <div class="activity-subtitle">Los Angeles, US</div>
+                                </div>
+                                <div class="activity-status">
+                                    <span class="status-badge delivered">Delivered</span>
+                                    <div class="activity-meta">Completed</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Transactions -->
+                    <div class="activity-card">
+                        <div class="card-header">
+                            <h2>Recent Transactions</h2>
+                            <a href="wallet.html" class="view-all-link">View All</a>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-item">
+                                <div class="activity-info">
+                                    <div class="activity-title">Payment Sent</div>
+                                    <div class="activity-subtitle">Dec 12</div>
+                                </div>
+                                <div class="activity-status">
+                                    <span class="transaction-amount negative">-$12,500</span>
+                                    <div class="activity-meta">USDC</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-info">
+                                    <div class="activity-title">Invoice Financed</div>
+                                    <div class="activity-subtitle">Dec 11</div>
+                                </div>
+                                <div class="activity-status">
+                                    <span class="transaction-amount positive">+$45,000</span>
+                                    <div class="activity-meta">USDT</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-info">
+                                    <div class="activity-title">Settlement Received</div>
+                                    <div class="activity-subtitle">Dec 10</div>
+                                </div>
+                                <div class="activity-status">
+                                    <span class="transaction-amount positive">+$8,750</span>
+                                    <div class="activity-meta">USDC</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Market Overview -->
+                <div class="market-overview-card">
+                    <div class="card-header">
+                        <h2>Market Overview</h2>
+                        <div class="market-tabs">
+                            <button class="tab-btn active" onclick="switchMarketTab('crypto')">Crypto</button>
+                            <button class="tab-btn" onclick="switchMarketTab('forex')">Forex</button>
+                            <button class="tab-btn" onclick="switchMarketTab('commodities')">Commodities</button>
+                        </div>
+                    </div>
+                    <div class="market-content">
+                        <div class="market-item">
+                            <div class="market-info">
+                                <div class="market-symbol">USDC/USDT</div>
+                                <div class="market-name">Stablecoin Pair</div>
+                            </div>
+                            <div class="market-price">$1.0002</div>
+                            <div class="market-change positive">+0.02%</div>
+                        </div>
+                        <div class="market-item">
+                            <div class="market-info">
+                                <div class="market-symbol">EUR/USD</div>
+                                <div class="market-name">Euro Dollar</div>
+                            </div>
+                            <div class="market-price">$1.0845</div>
+                            <div class="market-change positive">+0.15%</div>
+                        </div>
+                        <div class="market-item">
+                            <div class="market-info">
+                                <div class="market-symbol">Gold</div>
+                                <div class="market-name">Gold Spot</div>
+                            </div>
+                            <div class="market-price">$2,045.30</div>
+                            <div class="market-change negative">-0.8%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Navigation functions
+        function navigateToPage(page) {
+            window.location.href = page + '.html';
+        }
+
+        function refreshData() {
+            // Show loading state
+            window.showLoading('Refreshing data...');
+            
+            // Simulate data refresh
+            const refreshBtn = document.querySelector('.btn-outline');
+            const originalContent = refreshBtn.innerHTML;
+            refreshBtn.innerHTML = '<img src="icons/refresh.svg" alt="Refresh" width="16" height="16"> Refreshing...';
+            refreshBtn.disabled = true;
+            
+            setTimeout(() => {
+                window.hideLoading();
+                window.showSuccess('Data refreshed successfully!', 2000);
+                
+                refreshBtn.innerHTML = originalContent;
+                refreshBtn.disabled = false;
+                
+                // Simulate data updates
+                updateMetrics();
+            }, 2000);
+        }
+
+        function updateMetrics() {
+            // Simulate real-time metric updates
+            const metrics = document.querySelectorAll('.metric-value');
+            metrics.forEach(metric => {
+                const currentValue = metric.textContent;
+                // Add subtle animation
+                metric.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    metric.style.transform = 'scale(1)';
+                }, 200);
+            });
+        }
+
+
+        // Dropdown functionality
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            // Close other dropdowns
+            userDropdown.classList.remove('show');
+            
+            // Toggle current dropdown
+            dropdown.classList.toggle('show');
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            const languageDropdown = document.getElementById('languageDropdown');
+            
+            // Close other dropdowns
+            languageDropdown.classList.remove('show');
+            
+            // Toggle current dropdown
+            dropdown.classList.toggle('show');
+        }
+
+        function selectLanguage(lang) {
+            const languageSpan = document.querySelector('.dropdown-trigger span');
+            const languageMap = {
+                'en': 'EN',
+                'es': 'ES',
+                'fr': 'FR'
+            };
+            
+            languageSpan.textContent = languageMap[lang];
+            
+            // Update check icon
+            document.querySelectorAll('#languageDropdown .check-icon').forEach(icon => {
+                icon.style.display = 'none';
+            });
+            event.target.querySelector('.check-icon').style.display = 'block';
+            
+            // Close dropdown
+            document.getElementById('languageDropdown').classList.remove('show');
+            
+            console.log('Language changed to:', lang);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        function switchMarketTab(tab) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Here you would typically load different market data
+            console.log('Switched to', tab, 'tab');
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            const languageDropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            if (!event.target.closest('.dropdown-container')) {
+                languageDropdown.classList.remove('show');
+                userDropdown.classList.remove('show');
+            }
+        });
+
+        // Add hover effects to metric cards
+        document.querySelectorAll('.metric-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+            });
+        });
+
+        // Add click effects to quick action buttons
+        document.querySelectorAll('.quick-action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Page initialization
+        });
+    </script>
+</body>
+</html>

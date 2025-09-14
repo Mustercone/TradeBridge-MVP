@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stablecoin Wallet - TradeBridge</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="wallet.css">
+    <script src="sidebar-toggle.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <span class="logo-text-small">TB</span>
+                </div>
+                <span class="logo-text">TradeBridge</span>
+            </a>
+            <div class="header-actions">
+                
+                <!-- Language Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleLanguageDropdown()">
+                        <div class="worldwide-icon">🌍</div>
+                        <span>EN</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="languageDropdown">
+                        <div class="dropdown-item" onclick="selectLanguage('en')">
+                            <span>English</span>
+                            <img src="icons/check.svg" alt="Selected" width="16" height="16" class="check-icon">
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('es')">
+                            <span>Español</span>
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('fr')">
+                            <span>Français</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Profile Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleUserDropdown()">
+                        <div class="user-avatar">JD</div>
+                        <span class="user-name">John Doe</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="userDropdown">
+                        <div class="dropdown-item" onclick="navigateToPage('profile')">
+                            <img src="icons/user.svg" alt="Profile" width="16" height="16">
+                            <span>Profile</span>
+                        </div>
+                        <div class="dropdown-item" onclick="navigateToPage('settings')">
+                            <div class="settings-icon-small">⚙️</div>
+                            <span>Settings</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item logout" onclick="logout()">
+                            <img src="icons/logout.svg" alt="Logout" width="16" height="16">
+                            <span>Logout</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="dashboard-icon">📊</div>
+                    </div>
+                    <span>Dashboard</span>
+                </a>
+                <a href="trade-agreement.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="trade-agreement-icon">🤝</div>
+                    </div>
+                    <span>Trade Agreements</span>
+                </a>
+                <a href="invoice-financing.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="invoice-financing-icon">🧾</div>
+                    </div>
+                    <span>Invoice Financing</span>
+                </a>
+                <a href="wallet.html" class="nav-item active">
+                    <div class="nav-icon">
+                        <div class="wallet-icon">👛</div>
+                    </div>
+                    <span>Wallet</span>
+                    <div class="nav-arrow">
+                        <img src="icons/chevron-right.svg" alt="Arrow" width="16" height="16">
+                    </div>
+                </a>
+                <a href="shipment-tracker.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="shipment-tracker-icon">🚚</div>
+                    </div>
+                    <span>Shipment Tracker <span class="nav-badge-text">(3)</span></span>
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="notifications-icon">📢</div>
+                    </div>
+                    <span>Notifications <span class="nav-badge-text">(5)</span></span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="settings-icon">⚙️</div>
+                    </div>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <div class="header-text">
+                    <h1>Stablecoin Wallet</h1>
+                    <p>Manage your digital assets for trade finance</p>
+                </div>
+                <div class="header-actions">
+                    <div class="connection-status">
+                        <div class="status-dot"></div>
+                        <span>Connected</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wallet-grid">
+                <!-- Main Wallet Area -->
+                <div class="main-wallet-area">
+                    <!-- Tab Navigation -->
+                    <div class="tab-navigation">
+                        <button class="tab-button active" onclick="switchTab('balance')" data-tab="balance">
+                            Balance
+                        </button>
+                        <button class="tab-button" onclick="switchTab('send')" data-tab="send">
+                            Send
+                        </button>
+                        <button class="tab-button" onclick="switchTab('receive')" data-tab="receive">
+                            Receive
+                        </button>
+                        <button class="tab-button" onclick="switchTab('convert')" data-tab="convert">
+                            Convert
+                        </button>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+                        <!-- Balance Tab -->
+                        <div class="tab-panel active" id="balanceTab">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2 class="card-title">
+                                        <img src="icons/wallet.svg" alt="Wallet" width="20" height="20">
+                                        Portfolio Overview
+                                    </h2>
+                                </div>
+                                <div class="card-content">
+                                    <div class="total-balance">
+                                        <div class="balance-amount" id="totalBalance">$125,480.30</div>
+                                        <div class="balance-change positive">+2.3% (24h)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tokens-list">
+                                <div class="token-card" data-symbol="USDC">
+                                    <div class="token-info">
+                                        <div class="token-icon">💙</div>
+                                        <div class="token-details">
+                                            <div class="token-symbol">USDC</div>
+                                            <div class="token-name">USD Coin</div>
+                                        </div>
+                                    </div>
+                                    <div class="token-balance">
+                                        <div class="balance-amount">75,240.50</div>
+                                        <div class="balance-value">$75,240.50</div>
+                                    </div>
+                                </div>
+
+                                <div class="token-card" data-symbol="USDT">
+                                    <div class="token-info">
+                                        <div class="token-icon">💚</div>
+                                        <div class="token-details">
+                                            <div class="token-symbol">USDT</div>
+                                            <div class="token-name">Tether USD</div>
+                                        </div>
+                                    </div>
+                                    <div class="token-balance">
+                                        <div class="balance-amount">50,239.80</div>
+                                        <div class="balance-value">$50,239.80</div>
+                                    </div>
+                                </div>
+
+                                <div class="token-card" data-symbol="DAI">
+                                    <div class="token-info">
+                                        <div class="token-icon">🟡</div>
+                                        <div class="token-details">
+                                            <div class="token-symbol">DAI</div>
+                                            <div class="token-name">Dai Stablecoin</div>
+                                        </div>
+                                    </div>
+                                    <div class="token-balance">
+                                        <div class="balance-amount">0.00</div>
+                                        <div class="balance-value">$0.00</div>
+                                    </div>
+                                </div>
+
+                                <div class="token-card" data-symbol="BUSD">
+                                    <div class="token-info">
+                                        <div class="token-icon">🟨</div>
+                                        <div class="token-details">
+                                            <div class="token-symbol">BUSD</div>
+                                            <div class="token-name">Binance USD</div>
+                                        </div>
+                                    </div>
+                                    <div class="token-balance">
+                                        <div class="balance-amount">0.00</div>
+                                        <div class="balance-value">$0.00</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Send Tab -->
+                        <div class="tab-panel" id="sendTab">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2 class="card-title">
+                                        <img src="icons/send.svg" alt="Send" width="20" height="20">
+                                        Send Payment
+                                    </h2>
+                                </div>
+                                <div class="card-content">
+                                    <form class="send-form">
+                                        <div class="form-group">
+                                            <label for="recipientAddress">Recipient Address</label>
+                                            <input type="text" id="recipientAddress" placeholder="0x..." oninput="updateSendForm()">
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="sendAmount">Amount</label>
+                                                <input type="number" id="sendAmount" placeholder="0.00" oninput="updateSendForm()">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="sendToken">Token</label>
+                                                <select id="sendToken" onchange="updateSendForm()">
+                                                    <option value="USDC">💙 USDC</option>
+                                                    <option value="USDT">💚 USDT</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="transaction-summary">
+                                            <div class="summary-item">
+                                                <span>Gas Fee (Est.):</span>
+                                                <span>$2.50</span>
+                                            </div>
+                                            <div class="summary-item">
+                                                <span>Network:</span>
+                                                <span>Ethereum</span>
+                                            </div>
+                                            <div class="summary-item total">
+                                                <span>Total:</span>
+                                                <span id="sendTotal">$0.00</span>
+                                            </div>
+                                        </div>
+
+                                        <button type="button" class="btn btn-primary btn-full" onclick="sendPayment()" disabled>
+                                            Send Payment
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Receive Tab -->
+                        <div class="tab-panel" id="receiveTab">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2 class="card-title">
+                                        <img src="icons/arrow-down.svg" alt="Receive" width="20" height="20">
+                                        Receive Payment
+                                    </h2>
+                                </div>
+                                <div class="card-content">
+                                    <div class="receive-content">
+                                        <div class="qr-code-container">
+                                            <div class="qr-code">
+                                                <img src="icons/qr-code.svg" alt="QR Code" width="96" height="96">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Your Wallet Address</label>
+                                            <div class="address-input">
+                                                <input type="text" id="walletAddress" value="0x742d35Cc6C4c0532a1a5F1b9E3C7E1234567E7ab" readonly>
+                                                <button class="btn btn-outline" onclick="copyAddress()">
+                                                    <img src="icons/copy.svg" alt="Copy" width="16" height="16">
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <p class="receive-description">
+                                            Share this address or QR code to receive payments
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Convert Tab -->
+                        <div class="tab-panel" id="convertTab">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2 class="card-title">
+                                        <img src="icons/refresh.svg" alt="Convert" width="20" height="20">
+                                        Convert Tokens
+                                    </h2>
+                                </div>
+                                <div class="card-content">
+                                    <form class="convert-form">
+                                        <div class="convert-section">
+                                            <label>From</label>
+                                            <div class="convert-inputs">
+                                                <select id="convertFrom" onchange="updateConvertForm()">
+                                                    <option value="USDC">💙 USDC</option>
+                                                    <option value="USDT">💚 USDT</option>
+                                                    <option value="DAI">🟡 DAI</option>
+                                                    <option value="BUSD">🟨 BUSD</option>
+                                                </select>
+                                                <input type="number" id="convertAmount" placeholder="Amount" oninput="updateConvertForm()">
+                                            </div>
+                                        </div>
+
+                                        <div class="convert-arrow">
+                                            <button type="button" class="btn btn-outline btn-icon" onclick="swapTokens()">
+                                                <img src="icons/refresh.svg" alt="Swap" width="16" height="16">
+                                            </button>
+                                        </div>
+
+                                        <div class="convert-section">
+                                            <label>To</label>
+                                            <div class="convert-inputs">
+                                                <select id="convertTo" onchange="updateConvertForm()">
+                                                    <option value="USDT">💚 USDT</option>
+                                                    <option value="USDC">💙 USDC</option>
+                                                    <option value="DAI">🟡 DAI</option>
+                                                    <option value="BUSD">🟨 BUSD</option>
+                                                </select>
+                                                <input type="number" id="convertResult" placeholder="Amount" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="conversion-summary">
+                                            <div class="summary-item">
+                                                <span>Exchange Rate:</span>
+                                                <span id="exchangeRate">1 USDC = 0.9995 USDT</span>
+                                            </div>
+                                            <div class="summary-item">
+                                                <span>Fee:</span>
+                                                <span>0.05%</span>
+                                            </div>
+                                        </div>
+
+                                        <button type="button" class="btn btn-primary btn-full" onclick="convertTokens()" disabled>
+                                            Convert Tokens
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions Sidebar -->
+                <div class="sidebar-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Recent Transactions</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="transactions-list">
+                                <div class="transaction-item">
+                                    <div class="transaction-info">
+                                        <div class="transaction-type">Received</div>
+                                        <div class="transaction-details">From: 0x742d...E7ab</div>
+                                        <div class="transaction-date">Dec 12, 2023</div>
+                                    </div>
+                                    <div class="transaction-amount">
+                                        <div class="amount positive">+$12,500.00</div>
+                                        <div class="status completed">Completed</div>
+                                    </div>
+                                </div>
+
+                                <div class="transaction-item">
+                                    <div class="transaction-info">
+                                        <div class="transaction-type">Sent</div>
+                                        <div class="transaction-details">To: 0x9f2a...B4cd</div>
+                                        <div class="transaction-date">Dec 11, 2023</div>
+                                    </div>
+                                    <div class="transaction-amount">
+                                        <div class="amount negative">-$8,750.00</div>
+                                        <div class="status completed">Completed</div>
+                                    </div>
+                                </div>
+
+                                <div class="transaction-item">
+                                    <div class="transaction-info">
+                                        <div class="transaction-type">Converted</div>
+                                        <div class="transaction-details">USDC → USDT</div>
+                                        <div class="transaction-date">Dec 10, 2023</div>
+                                    </div>
+                                    <div class="transaction-amount">
+                                        <div class="amount neutral">$25,000.00</div>
+                                        <div class="status completed">Completed</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // State management
+        let activeTab = 'balance';
+        let sendAmount = '';
+        let sendTo = '';
+        let selectedToken = 'USDC';
+        let convertFrom = 'USDC';
+        let convertTo = 'USDT';
+        let convertAmount = '';
+
+        // Navigation functions
+        function navigateToPage(page) {
+            window.location.href = page + '.html';
+        }
+
+        function toggleNotifications() {
+            console.log('Toggle notifications');
+        }
+
+        // Dropdown functionality
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            userDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            const languageDropdown = document.getElementById('languageDropdown');
+            
+            languageDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function selectLanguage(lang) {
+            const languageSpan = document.querySelector('.dropdown-trigger span');
+            const languageMap = {
+                'en': 'EN',
+                'es': 'ES',
+                'fr': 'FR'
+            };
+            
+            languageSpan.textContent = languageMap[lang];
+            document.getElementById('languageDropdown').classList.remove('show');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Tab functionality
+        function switchTab(tabName) {
+            // Update active tab button
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+            // Update active tab panel
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById(tabName + 'Tab').classList.add('active');
+
+            activeTab = tabName;
+        }
+
+        // Send form functionality
+        function updateSendForm() {
+            const amount = document.getElementById('sendAmount').value;
+            const gasFee = 2.50;
+            const total = amount ? (parseFloat(amount) + gasFee).toFixed(2) : '0.00';
+            
+            document.getElementById('sendTotal').textContent = `$${total}`;
+            
+            const sendButton = document.querySelector('#sendTab .btn-primary');
+            sendButton.disabled = !amount || !document.getElementById('recipientAddress').value;
+        }
+
+        function sendPayment() {
+            const amount = document.getElementById('sendAmount').value;
+            const recipient = document.getElementById('recipientAddress').value;
+            const token = document.getElementById('sendToken').value;
+            
+            if (amount && recipient) {
+                alert(`Sending ${amount} ${token} to ${recipient}`);
+                // Here you would typically process the transaction
+            }
+        }
+
+        // Receive functionality
+        function copyAddress() {
+            const addressInput = document.getElementById('walletAddress');
+            addressInput.select();
+            document.execCommand('copy');
+            
+            // Show feedback
+            const button = event.target.closest('button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<img src="icons/check.svg" alt="Copied" width="16" height="16">';
+            setTimeout(() => {
+                button.innerHTML = originalText;
+            }, 2000);
+        }
+
+        // Convert functionality
+        function updateConvertForm() {
+            const fromToken = document.getElementById('convertFrom').value;
+            const toToken = document.getElementById('convertTo').value;
+            const amount = document.getElementById('convertAmount').value;
+            
+            // Update exchange rate display
+            document.getElementById('exchangeRate').textContent = `1 ${fromToken} = 0.9995 ${toToken}`;
+            
+            // Calculate conversion result
+            if (amount) {
+                const result = (parseFloat(amount) * 0.9995).toFixed(4);
+                document.getElementById('convertResult').value = result;
+            } else {
+                document.getElementById('convertResult').value = '';
+            }
+            
+            // Enable/disable convert button
+            const convertButton = document.querySelector('#convertTab .btn-primary');
+            convertButton.disabled = !amount;
+        }
+
+        function swapTokens() {
+            const fromSelect = document.getElementById('convertFrom');
+            const toSelect = document.getElementById('convertTo');
+            const fromValue = fromSelect.value;
+            const toValue = toSelect.value;
+            
+            fromSelect.value = toValue;
+            toSelect.value = fromValue;
+            
+            updateConvertForm();
+        }
+
+        function convertTokens() {
+            const amount = document.getElementById('convertAmount').value;
+            const fromToken = document.getElementById('convertFrom').value;
+            const toToken = document.getElementById('convertTo').value;
+            
+            if (amount) {
+                alert(`Converting ${amount} ${fromToken} to ${toToken}`);
+                // Here you would typically process the conversion
+            }
+        }
+
+        // Close dropdowns when clicking outside
+        window.onclick = function(event) {
+            const languageDropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            if (!event.target.closest('.dropdown-container')) {
+                languageDropdown.classList.remove('show');
+                userDropdown.classList.remove('show');
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSendForm();
+            updateConvertForm();
+        });
+    </script>
+</body>
+</html>

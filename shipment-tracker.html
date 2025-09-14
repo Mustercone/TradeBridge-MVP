@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipment Tracker - TradeBridge</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="shipment-tracker.css">
+    <script src="sidebar-toggle.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <span class="logo-text-small">TB</span>
+                </div>
+                <span class="logo-text">TradeBridge</span>
+            </a>
+            <div class="header-actions">
+                
+                <!-- Language Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleLanguageDropdown()">
+                        <div class="worldwide-icon">🌍</div>
+                        <span>EN</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="languageDropdown">
+                        <div class="dropdown-item" onclick="selectLanguage('en')">
+                            <span>English</span>
+                            <img src="icons/check.svg" alt="Selected" width="16" height="16" class="check-icon">
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('es')">
+                            <span>Español</span>
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('fr')">
+                            <span>Français</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Profile Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleUserDropdown()">
+                        <div class="user-avatar">JD</div>
+                        <span class="user-name">John Doe</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="userDropdown">
+                        <div class="dropdown-item" onclick="navigateToPage('profile')">
+                            <img src="icons/user.svg" alt="Profile" width="16" height="16">
+                            <span>Profile</span>
+                        </div>
+                        <div class="dropdown-item" onclick="navigateToPage('settings')">
+                            <div class="settings-icon-small">⚙️</div>
+                            <span>Settings</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item logout" onclick="logout()">
+                            <img src="icons/logout.svg" alt="Logout" width="16" height="16">
+                            <span>Logout</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="dashboard-icon">📊</div>
+                    </div>
+                    <span>Dashboard</span>
+                </a>
+                <a href="trade-agreement.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="trade-agreement-icon">🤝</div>
+                    </div>
+                    <span>Trade Agreements</span>
+                </a>
+                <a href="invoice-financing.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="invoice-financing-icon">🧾</div>
+                    </div>
+                    <span>Invoice Financing</span>
+                </a>
+                <a href="wallet.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="wallet-icon">👛</div>
+                    </div>
+                    <span>Wallet</span>
+                </a>
+                <a href="shipment-tracker.html" class="nav-item active">
+                    <div class="nav-icon">
+                        <div class="shipment-tracker-icon">🚚</div>
+                    </div>
+                    <span>Shipment Tracker <span class="nav-badge-text">(3)</span></span>
+                    <div class="nav-arrow">
+                        <img src="icons/chevron-right.svg" alt="Arrow" width="16" height="16">
+                    </div>
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="notifications-icon">📢</div>
+                    </div>
+                    <span>Notifications <span class="nav-badge-text">(5)</span></span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="settings-icon">⚙️</div>
+                    </div>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <div class="header-text">
+                    <h1>Shipment Tracker</h1>
+                    <p>Track your trade shipments in real-time</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" onclick="refreshShipments()">
+                        <img src="icons/refresh.svg" alt="Refresh" width="16" height="16">
+                        Refresh
+                    </button>
+                </div>
+            </div>
+
+            <div class="tracker-grid">
+                <!-- Shipment List Sidebar -->
+                <div class="shipment-list-sidebar">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Active Shipments</h2>
+                            <div class="search-container">
+                                <img src="icons/search.svg" alt="Search" class="search-icon">
+                                <input type="text" id="searchInput" placeholder="Search shipments..." oninput="filterShipments()">
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="shipments-list" id="shipmentsList">
+                                <!-- Shipment items will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shipment Details Main Area -->
+                <div class="shipment-details-area">
+                    <!-- Tab Navigation -->
+                    <div class="tab-navigation">
+                        <button class="tab-button active" onclick="switchTab('overview')" data-tab="overview">
+                            Overview
+                        </button>
+                        <button class="tab-button" onclick="switchTab('tracking')" data-tab="tracking">
+                            Tracking
+                        </button>
+                        <button class="tab-button" onclick="switchTab('documents')" data-tab="documents">
+                            Documents
+                        </button>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+                        <!-- Overview Tab -->
+                        <div class="tab-panel active" id="overviewTab">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2 class="card-title" id="overviewTitle">
+                                        <img src="icons/package.svg" alt="Package" width="20" height="20">
+                                        SH-001 - Shipment Overview
+                                    </h2>
+                                </div>
+                                <div class="card-content">
+                                    <div class="overview-grid">
+                                        <div class="overview-section">
+                                            <h3>Shipment Details</h3>
+                                            <div class="details-list" id="shipmentDetails">
+                                                <!-- Details will be populated here -->
+                                            </div>
+                                        </div>
+
+                                        <div class="overview-section">
+                                            <h3>Route</h3>
+                                            <div class="route-info" id="routeInfo">
+                                                <!-- Route info will be populated here -->
+                                            </div>
+                                        </div>
+
+                                        <div class="overview-section">
+                                            <h3>Progress</h3>
+                                            <div class="progress-section" id="progressSection">
+                                                <!-- Progress will be populated here -->
+                                            </div>
+                                        </div>
+
+                                        <div class="overview-section">
+                                            <h3>Last Update</h3>
+                                            <div class="last-update" id="lastUpdate">
+                                                <!-- Last update will be populated here -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Map Placeholder -->
+                                    <div class="map-placeholder">
+                                        <div class="map-content">
+                                            <img src="icons/map-pin.svg" alt="Map" width="48" height="48">
+                                            <h4>Interactive Map View</h4>
+                                            <p>Real-time vessel tracking would be displayed here</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tracking Tab -->
+                        <div class="tab-panel" id="trackingTab">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2 class="card-title">Tracking Timeline</h2>
+                                </div>
+                                <div class="card-content">
+                                    <div class="timeline" id="trackingTimeline">
+                                        <!-- Timeline events will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Documents Tab -->
+                        <div class="tab-panel" id="documentsTab">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2 class="card-title">Shipping Documents</h2>
+                                </div>
+                                <div class="card-content">
+                                    <div class="documents-list" id="documentsList">
+                                        <!-- Documents will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Shipment data
+        const shipments = [
+            {
+                id: "SH-001",
+                status: "In Transit",
+                goods: "Electronics Components",
+                origin: "Shenzhen, CN",
+                destination: "Hamburg, DE",
+                eta: "Dec 15, 2023",
+                progress: 65,
+                vessel: "COSCO Shanghai",
+                lastUpdate: "Passed through Suez Canal"
+            },
+            {
+                id: "SH-002",
+                status: "Customs",
+                goods: "Textile Materials",
+                origin: "Mumbai, IN",
+                destination: "Los Angeles, US",
+                eta: "Dec 18, 2023",
+                progress: 85,
+                vessel: "MSC Gülsün",
+                lastUpdate: "Customs clearance in progress"
+            },
+            {
+                id: "SH-003",
+                status: "Delivered",
+                goods: "Medical Equipment",
+                origin: "Frankfurt, DE",
+                destination: "New York, US",
+                eta: "Completed",
+                progress: 100,
+                vessel: "Lufthansa Cargo",
+                lastUpdate: "Delivered successfully"
+            },
+            {
+                id: "SH-004",
+                status: "Delayed",
+                goods: "Raw Materials",
+                origin: "São Paulo, BR",
+                destination: "Rotterdam, NL",
+                eta: "Dec 20, 2023 (Delayed)",
+                progress: 45,
+                vessel: "Maersk Eindhoven",
+                lastUpdate: "Weather delay - 2 days"
+            }
+        ];
+
+        const trackingEvents = [
+            {
+                date: "Dec 12, 2023 14:30",
+                location: "Suez Canal, EG",
+                event: "Vessel passed through Suez Canal",
+                status: "completed"
+            },
+            {
+                date: "Dec 10, 2023 09:15",
+                location: "Port Said, EG",
+                event: "Arrived at Port Said",
+                status: "completed"
+            },
+            {
+                date: "Dec 8, 2023 16:45",
+                location: "Mediterranean Sea",
+                event: "In transit via Mediterranean",
+                status: "completed"
+            },
+            {
+                date: "Dec 6, 2023 08:00",
+                location: "Piraeus, GR",
+                event: "Departed from Piraeus Port",
+                status: "completed"
+            },
+            {
+                date: "Dec 4, 2023 12:30",
+                location: "Shenzhen, CN",
+                event: "Container loaded on vessel",
+                status: "completed"
+            }
+        ];
+
+        const documents = [
+            { name: "Bill of Lading", type: "PDF", size: "2.1 MB", date: "Dec 4, 2023" },
+            { name: "Commercial Invoice", type: "PDF", size: "1.8 MB", date: "Dec 4, 2023" },
+            { name: "Packing List", type: "PDF", size: "0.9 MB", date: "Dec 4, 2023" },
+            { name: "Certificate of Origin", type: "PDF", size: "1.2 MB", date: "Dec 4, 2023" },
+            { name: "Insurance Certificate", type: "PDF", size: "1.5 MB", date: "Dec 4, 2023" }
+        ];
+
+        // State management
+        let selectedShipment = shipments[0];
+        let searchQuery = '';
+        let activeTab = 'overview';
+
+        // Navigation functions
+        function navigateToPage(page) {
+            window.location.href = page + '.html';
+        }
+
+        function refreshShipments() {
+            console.log('Refreshing shipments...');
+            // Here you would typically fetch fresh data
+            loadShipments();
+        }
+
+        function toggleNotifications() {
+            console.log('Toggle notifications');
+        }
+
+        // Dropdown functionality
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            userDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            const languageDropdown = document.getElementById('languageDropdown');
+            
+            languageDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function selectLanguage(lang) {
+            const languageSpan = document.querySelector('.dropdown-trigger span');
+            const languageMap = {
+                'en': 'EN',
+                'es': 'ES',
+                'fr': 'FR'
+            };
+            
+            languageSpan.textContent = languageMap[lang];
+            document.getElementById('languageDropdown').classList.remove('show');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Tab functionality
+        function switchTab(tabName) {
+            // Update active tab button
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+            // Update active tab panel
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById(tabName + 'Tab').classList.add('active');
+
+            activeTab = tabName;
+        }
+
+        // Shipment functions
+        function selectShipment(shipmentId) {
+            selectedShipment = shipments.find(s => s.id === shipmentId);
+            updateShipmentDetails();
+            updateTrackingTimeline();
+            updateDocumentsList();
+        }
+
+        function filterShipments() {
+            searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            loadShipments();
+        }
+
+        function loadShipments() {
+            const filteredShipments = shipments.filter(shipment =>
+                shipment.id.toLowerCase().includes(searchQuery) ||
+                shipment.goods.toLowerCase().includes(searchQuery) ||
+                shipment.destination.toLowerCase().includes(searchQuery)
+            );
+
+            const shipmentsList = document.getElementById('shipmentsList');
+            shipmentsList.innerHTML = filteredShipments.map(shipment => `
+                <div class="shipment-item ${selectedShipment.id === shipment.id ? 'selected' : ''}" 
+                     onclick="selectShipment('${shipment.id}')">
+                    <div class="shipment-header">
+                        <span class="shipment-id">${shipment.id}</span>
+                        <span class="status-badge ${getStatusClass(shipment.status)}">
+                            <img src="icons/${getStatusIcon(shipment.status)}.svg" alt="${shipment.status}" width="12" height="12">
+                            ${shipment.status}
+                        </span>
+                    </div>
+                    <div class="shipment-goods">${shipment.goods}</div>
+                    <div class="shipment-route">${shipment.origin} → ${shipment.destination}</div>
+                    <div class="shipment-progress">
+                        <div class="progress-header">
+                            <span>Progress</span>
+                            <span>${shipment.progress}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${shipment.progress}%"></div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateShipmentDetails() {
+            document.getElementById('overviewTitle').innerHTML = `
+                <img src="icons/package.svg" alt="Package" width="20" height="20">
+                ${selectedShipment.id} - Shipment Overview
+            `;
+
+            document.getElementById('shipmentDetails').innerHTML = `
+                <div class="detail-item">
+                    <span class="detail-label">Goods:</span>
+                    <span class="detail-value">${selectedShipment.goods}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Status:</span>
+                    <span class="status-badge ${getStatusClass(selectedShipment.status)}">${selectedShipment.status}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Vessel/Flight:</span>
+                    <span class="detail-value">${selectedShipment.vessel}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">ETA:</span>
+                    <span class="detail-value">${selectedShipment.eta}</span>
+                </div>
+            `;
+
+            document.getElementById('routeInfo').innerHTML = `
+                <div class="route-point">
+                    <div class="route-dot origin"></div>
+                    <span>Origin: ${selectedShipment.origin}</span>
+                </div>
+                <div class="route-point">
+                    <div class="route-dot destination"></div>
+                    <span>Destination: ${selectedShipment.destination}</span>
+                </div>
+            `;
+
+            document.getElementById('progressSection').innerHTML = `
+                <div class="progress-header">
+                    <span>Completion</span>
+                    <span>${selectedShipment.progress}%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${selectedShipment.progress}%"></div>
+                </div>
+            `;
+
+            document.getElementById('lastUpdate').innerHTML = `
+                <p>${selectedShipment.lastUpdate}</p>
+            `;
+        }
+
+        function updateTrackingTimeline() {
+            document.getElementById('trackingTimeline').innerHTML = trackingEvents.map((event, index) => `
+                <div class="timeline-item">
+                    <div class="timeline-dot ${event.status === 'completed' ? 'completed' : ''}"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <span class="timeline-event">${event.event}</span>
+                            <span class="timeline-date">${event.date}</span>
+                        </div>
+                        <div class="timeline-location">
+                            <img src="icons/map-pin.svg" alt="Location" width="12" height="12">
+                            ${event.location}
+                        </div>
+                    </div>
+                    ${index < trackingEvents.length - 1 ? '<div class="timeline-line"></div>' : ''}
+                </div>
+            `).join('');
+        }
+
+        function updateDocumentsList() {
+            document.getElementById('documentsList').innerHTML = documents.map((doc, index) => `
+                <div class="document-item">
+                    <div class="document-icon">
+                        <span class="file-type">PDF</span>
+                    </div>
+                    <div class="document-info">
+                        <div class="document-name">${doc.name}</div>
+                        <div class="document-meta">${doc.size} • ${doc.date}</div>
+                    </div>
+                    <button class="btn btn-outline btn-sm" onclick="downloadDocument('${doc.name}')">
+                        <img src="icons/external-link.svg" alt="Download" width="16" height="16">
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function downloadDocument(documentName) {
+            alert(`Downloading ${documentName}...`);
+            // Here you would typically trigger the download
+        }
+
+        // Helper functions
+        function getStatusClass(status) {
+            const statusMap = {
+                'In Transit': 'in-transit',
+                'Customs': 'customs',
+                'Delivered': 'delivered',
+                'Delayed': 'delayed'
+            };
+            return statusMap[status] || 'default';
+        }
+
+        function getStatusIcon(status) {
+            const iconMap = {
+                'In Transit': 'truck',
+                'Customs': 'clock',
+                'Delivered': 'check-circle',
+                'Delayed': 'alert-triangle'
+            };
+            return iconMap[status] || 'package';
+        }
+
+        // Close dropdowns when clicking outside
+        window.onclick = function(event) {
+            const languageDropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            if (!event.target.closest('.dropdown-container')) {
+                languageDropdown.classList.remove('show');
+                userDropdown.classList.remove('show');
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadShipments();
+            updateShipmentDetails();
+            updateTrackingTimeline();
+            updateDocumentsList();
+        });
+    </script>
+</body>
+</html>

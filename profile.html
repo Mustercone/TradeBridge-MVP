@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - TradeBridge</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="profile.css">
+    <script src="sidebar-toggle.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <span class="logo-text-small">TB</span>
+                </div>
+                <span class="logo-text">TradeBridge</span>
+            </a>
+            <div class="header-actions">
+                
+                <!-- Language Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleLanguageDropdown()">
+                        <div class="worldwide-icon">🌍</div>
+                        <span>EN</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="languageDropdown">
+                        <div class="dropdown-item" onclick="selectLanguage('en')">
+                            <span>English</span>
+                            <img src="icons/check.svg" alt="Selected" width="16" height="16" class="check-icon">
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('es')">
+                            <span>Español</span>
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('fr')">
+                            <span>Français</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Profile Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleUserDropdown()">
+                        <div class="user-avatar">JD</div>
+                        <span class="user-name">John Doe</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="userDropdown">
+                        <div class="dropdown-item" onclick="navigateToPage('profile')">
+                            <img src="icons/user.svg" alt="Profile" width="16" height="16">
+                            <span>Profile</span>
+                        </div>
+                        <div class="dropdown-item" onclick="navigateToPage('settings')">
+                            <div class="settings-icon-small">⚙️</div>
+                            <span>Settings</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item logout" onclick="logout()">
+                            <img src="icons/logout.svg" alt="Logout" width="16" height="16">
+                            <span>Logout</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content standalone-page">
+            <div class="page-header">
+                <div class="header-text">
+                    <h1>Profile</h1>
+                    <p>Manage your account settings and preferences</p>
+                </div>
+                <button class="btn btn-primary" onclick="toggleEditMode()" id="editButton">
+                    <img src="icons/edit.svg" alt="Edit" width="16" height="16">
+                    <span id="editButtonText">Edit Profile</span>
+                </button>
+            </div>
+
+            <div class="profile-grid">
+                <!-- Profile Card -->
+                <div class="profile-card-section">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            <div class="avatar-container">
+                                <div class="avatar">
+                                    <div class="avatar-fallback">JD</div>
+                                </div>
+                            </div>
+                            <h2 class="profile-name" id="profileName">John Doe</h2>
+                            <p class="profile-position">
+                                <img src="icons/building.svg" alt="Building" width="16" height="16">
+                                <span id="profilePosition">Senior Trade Manager</span>
+                            </p>
+                            <div class="verification-badge">
+                                <img src="icons/shield.svg" alt="Verified" width="12" height="12">
+                                <span>Verified Account</span>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <img src="icons/mail.svg" alt="Email" width="16" height="16">
+                                    <span id="profileEmail">john.doe@tradecorp.com</span>
+                                </div>
+                                <div class="contact-item">
+                                    <img src="icons/phone.svg" alt="Phone" width="16" height="16">
+                                    <span id="profilePhone">+1 (555) 123-4567</span>
+                                </div>
+                                <div class="contact-item">
+                                    <img src="icons/map-pin.svg" alt="Location" width="16" height="16">
+                                    <span id="profileLocation">New York, NY</span>
+                                </div>
+                                <div class="contact-item">
+                                    <img src="icons/calendar.svg" alt="Member Since" width="16" height="16">
+                                    <span>Member since January 2023</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <img src="icons/file-text.svg" alt="Active Trades" width="20" height="20">
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">24</div>
+                                <div class="stat-label">Active Trades</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <img src="icons/trending-up.svg" alt="Trade Volume" width="20" height="20">
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">$2.4M</div>
+                                <div class="stat-label">Trade Volume</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="main-content-section">
+                    <div class="tab-navigation">
+                        <button class="tab-button active" onclick="switchTab('personal')" data-tab="personal">
+                            <img src="icons/user.svg" alt="Personal Info" width="16" height="16">
+                            Personal Info
+                        </button>
+                        <button class="tab-button" onclick="switchTab('preferences')" data-tab="preferences">
+                            <img src="icons/settings.svg" alt="Preferences" width="16" height="16">
+                            Preferences
+                        </button>
+                    </div>
+
+                    <!-- Personal Info Tab -->
+                    <div class="tab-panel active" id="personalTab">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">Personal Information</h2>
+                                <p class="card-description">Update your personal details and contact information</p>
+                            </div>
+                            <div class="card-content">
+                                <form class="profile-form">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="firstName">First Name</label>
+                                            <input type="text" id="firstName" value="John" oninput="updateProfile()" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lastName">Last Name</label>
+                                            <input type="text" id="lastName" value="Doe" oninput="updateProfile()" disabled>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="email">Email Address</label>
+                                        <input type="email" id="email" value="john.doe@tradecorp.com" oninput="updateProfile()" disabled>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="phone">Phone Number</label>
+                                            <input type="tel" id="phone" value="+1 (555) 123-4567" oninput="updateProfile()" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="location">Location</label>
+                                            <input type="text" id="location" value="New York, NY" oninput="updateProfile()" disabled>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="company">Company</label>
+                                            <input type="text" id="company" value="TradeCorp International" oninput="updateProfile()" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="position">Position</label>
+                                            <input type="text" id="position" value="Senior Trade Manager" oninput="updateProfile()" disabled>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="bio">Bio</label>
+                                        <textarea id="bio" rows="3" oninput="updateProfile()" disabled>Experienced trade finance professional with over 10 years in international commerce and supply chain management.</textarea>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preferences Tab -->
+                    <div class="tab-panel" id="preferencesTab">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">Notification Preferences</h2>
+                                <p class="card-description">Manage how you receive notifications and updates</p>
+                            </div>
+                            <div class="card-content">
+                                <div class="preferences-section">
+                                    <div class="preference-item">
+                                        <div class="preference-info">
+                                            <h4>Email Notifications</h4>
+                                            <p>Receive notifications via email</p>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" id="emailNotifications" checked onchange="updatePreferences()">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="preference-divider"></div>
+
+                                    <div class="preference-item">
+                                        <div class="preference-info">
+                                            <h4>SMS Notifications</h4>
+                                            <p>Receive critical updates via SMS</p>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" id="smsNotifications" onchange="updatePreferences()">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="preference-divider"></div>
+
+                                    <div class="preference-item">
+                                        <div class="preference-info">
+                                            <h4>Trade Alerts</h4>
+                                            <p>Get notified about trade status changes</p>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" id="tradeAlerts" checked onchange="updatePreferences()">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="preference-divider"></div>
+
+                                    <div class="preference-item">
+                                        <div class="preference-info">
+                                            <h4>Weekly Reports</h4>
+                                            <p>Receive weekly trade activity summaries</p>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" id="weeklyReports" checked onchange="updatePreferences()">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="preference-divider"></div>
+
+                                <div class="security-section">
+                                    <h4>Security Settings</h4>
+                                    <div class="preference-item">
+                                        <div class="preference-info">
+                                            <h4>Two-Factor Authentication</h4>
+                                            <p>Add an extra layer of security to your account</p>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" id="twoFactorAuth" checked onchange="updatePreferences()">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </main>
+
+    <script>
+        // State management
+        let isEditing = false;
+        let profileData = {
+            firstName: "John",
+            lastName: "Doe",
+            email: "john.doe@tradecorp.com",
+            phone: "+1 (555) 123-4567",
+            company: "TradeCorp International",
+            position: "Senior Trade Manager",
+            location: "New York, NY",
+            bio: "Experienced trade finance professional with over 10 years in international commerce and supply chain management."
+        };
+
+        let preferences = {
+            emailNotifications: true,
+            smsNotifications: false,
+            tradeAlerts: true,
+            weeklyReports: true,
+            twoFactorAuth: true
+        };
+
+        let activeTab = 'personal';
+
+        // Navigation functions
+        function navigateToPage(page) {
+            window.location.href = page + '.html';
+        }
+
+        function toggleNotifications() {
+            console.log('Toggle notifications');
+        }
+
+        // Dropdown functionality
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            userDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            const languageDropdown = document.getElementById('languageDropdown');
+            
+            languageDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function selectLanguage(lang) {
+            const languageSpan = document.querySelector('.dropdown-trigger span');
+            const languageMap = {
+                'en': 'EN',
+                'es': 'ES',
+                'fr': 'FR'
+            };
+            
+            languageSpan.textContent = languageMap[lang];
+            document.getElementById('languageDropdown').classList.remove('show');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Tab functionality
+        function switchTab(tabName) {
+            // Update active tab button
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+            // Update active tab panel
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById(tabName + 'Tab').classList.add('active');
+
+            activeTab = tabName;
+        }
+
+        // Edit mode functionality
+        function toggleEditMode() {
+            isEditing = !isEditing;
+            const editButton = document.getElementById('editButton');
+            const editButtonText = document.getElementById('editButtonText');
+            const inputs = document.querySelectorAll('#personalTab input, #personalTab textarea');
+
+            if (isEditing) {
+                editButtonText.textContent = 'Save Changes';
+                editButton.classList.add('btn-success');
+                inputs.forEach(input => {
+                    input.disabled = false;
+                    input.classList.add('editing');
+                });
+            } else {
+                editButtonText.textContent = 'Edit Profile';
+                editButton.classList.remove('btn-success');
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    input.classList.remove('editing');
+                });
+                saveProfile();
+            }
+        }
+
+        // Profile functions
+        function updateProfile() {
+            profileData.firstName = document.getElementById('firstName').value;
+            profileData.lastName = document.getElementById('lastName').value;
+            profileData.email = document.getElementById('email').value;
+            profileData.phone = document.getElementById('phone').value;
+            profileData.location = document.getElementById('location').value;
+            profileData.company = document.getElementById('company').value;
+            profileData.position = document.getElementById('position').value;
+            profileData.bio = document.getElementById('bio').value;
+
+            // Update profile display
+            document.getElementById('profileName').textContent = `${profileData.firstName} ${profileData.lastName}`;
+            document.getElementById('profilePosition').textContent = profileData.position;
+            document.getElementById('profileEmail').textContent = profileData.email;
+            document.getElementById('profilePhone').textContent = profileData.phone;
+            document.getElementById('profileLocation').textContent = profileData.location;
+        }
+
+        function saveProfile() {
+            updateProfile();
+            alert('Profile updated successfully!');
+        }
+
+        // Preferences functions
+        function updatePreferences() {
+            preferences.emailNotifications = document.getElementById('emailNotifications').checked;
+            preferences.smsNotifications = document.getElementById('smsNotifications').checked;
+            preferences.tradeAlerts = document.getElementById('tradeAlerts').checked;
+            preferences.weeklyReports = document.getElementById('weeklyReports').checked;
+            preferences.twoFactorAuth = document.getElementById('twoFactorAuth').checked;
+        }
+
+        // Close dropdowns when clicking outside
+        window.onclick = function(event) {
+            const languageDropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            if (!event.target.closest('.dropdown-container')) {
+                languageDropdown.classList.remove('show');
+                userDropdown.classList.remove('show');
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProfile();
+        });
+    </script>
+    
+    <!-- Photo Upload Functionality -->
+    <script src="photo-upload.js"></script>
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - TradeBridge</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="notifications.css">
+    <script src="loading-toast.js"></script>
+    <script src="mobile-optimization.js"></script>
+    <script src="global-search.js"></script>
+    <script src="export-functionality.js"></script>
+    <script src="realtime-updates.js"></script>
+    <script src="sidebar-toggle.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <span class="logo-text-small">TB</span>
+                </div>
+                <span class="logo-text">TradeBridge</span>
+            </a>
+            <div class="header-actions">
+                
+                <!-- Language Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleLanguageDropdown()">
+                        <div class="worldwide-icon">🌍</div>
+                        <span>EN</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="languageDropdown">
+                        <div class="dropdown-item" onclick="selectLanguage('en')">
+                            <span>English</span>
+                            <img src="icons/check.svg" alt="Selected" width="16" height="16" class="check-icon">
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('es')">
+                            <span>Español</span>
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('fr')">
+                            <span>Français</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Profile Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleUserDropdown()">
+                        <div class="user-avatar">JD</div>
+                        <span class="user-name">John Doe</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="userDropdown">
+                        <div class="dropdown-item" onclick="navigateToPage('profile')">
+                            <img src="icons/user.svg" alt="Profile" width="16" height="16">
+                            <span>Profile</span>
+                        </div>
+                        <div class="dropdown-item" onclick="navigateToPage('settings')">
+                            <div class="settings-icon-small">⚙️</div>
+                            <span>Settings</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item logout" onclick="logout()">
+                            <img src="icons/logout.svg" alt="Logout" width="16" height="16">
+                            <span>Logout</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="dashboard-icon">📊</div>
+                    </div>
+                    <span>Dashboard</span>
+                </a>
+                <a href="trade-agreement.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="trade-agreement-icon">🤝</div>
+                    </div>
+                    <span>Trade Agreements</span>
+                </a>
+                <a href="invoice-financing.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="invoice-financing-icon">🧾</div>
+                    </div>
+                    <span>Invoice Financing</span>
+                </a>
+                <a href="wallet.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="wallet-icon">👛</div>
+                    </div>
+                    <span>Wallet</span>
+                </a>
+                <a href="shipment-tracker.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="shipment-tracker-icon">🚚</div>
+                    </div>
+                    <span>Shipment Tracker <span class="nav-badge-text">(3)</span></span>
+                </a>
+                <a href="notifications.html" class="nav-item active">
+                    <div class="nav-icon">
+                        <div class="notifications-icon">📢</div>
+                    </div>
+                    <span>Notifications <span class="nav-badge-text">(5)</span></span>
+                    <div class="nav-arrow">
+                        <img src="icons/chevron-right.svg" alt="Arrow" width="16" height="16">
+                    </div>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="settings-icon">⚙️</div>
+                    </div>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="dashboard-content">
+                <!-- Page Header -->
+                <div class="page-header-simple">
+                    <div class="page-header-content">
+                        <div class="page-title-section">
+                            <h1>Notifications</h1>
+                            <div class="unread-badge" id="unreadBadge" style="display: none;">
+                                <span id="unreadCount">0</span> unread
+                            </div>
+                        </div>
+                        <div class="page-actions">
+                            <div class="dropdown-container">
+                                <button class="dropdown-trigger" onclick="toggleFilterDropdown()">
+                                    <img src="icons/filter.svg" alt="Filter" width="16" height="16">
+                                    <span id="filterText">Filter</span>
+                                    <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                                </button>
+                                <div class="dropdown-menu" id="filterDropdown">
+                                    <div class="dropdown-item" onclick="setFilter('all')">
+                                        <span>All Notifications</span>
+                                    </div>
+                                    <div class="dropdown-item" onclick="setFilter('unread')">
+                                        <img src="icons/alert-circle.svg" alt="Unread" width="16" height="16">
+                                        <span>Unread Only</span>
+                                    </div>
+                                    <div class="dropdown-item" onclick="setFilter('shipment')">
+                                        <img src="icons/package.svg" alt="Shipments" width="16" height="16">
+                                        <span>Shipments</span>
+                                    </div>
+                                    <div class="dropdown-item" onclick="setFilter('finance')">
+                                        <img src="icons/file-text.svg" alt="Finance" width="16" height="16">
+                                        <span>Finance</span>
+                                    </div>
+                                    <div class="dropdown-item" onclick="setFilter('wallet')">
+                                        <img src="icons/wallet.svg" alt="Wallet" width="16" height="16">
+                                        <span>Wallet</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline" onclick="markAllAsRead()">
+                                <img src="icons/check.svg" alt="Mark all read" width="16" height="16">
+                                Mark All Read
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Content -->
+                <div class="notifications-content">
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <div class="notifications-icon">🔔</div>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="totalNotifications">12</div>
+                                <div class="stat-label">Total</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <img src="icons/alert-circle.svg" alt="Unread" width="24" height="24">
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="unreadNotifications">5</div>
+                                <div class="stat-label">Unread</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <img src="icons/package.svg" alt="Shipments" width="24" height="24">
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="shipmentNotifications">3</div>
+                                <div class="stat-label">Shipments</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <img src="icons/file-text.svg" alt="Finance" width="24" height="24">
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="financeNotifications">4</div>
+                                <div class="stat-label">Finance</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications List -->
+                    <div class="notifications-list" id="notificationsList">
+                        <!-- Notifications will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // State management
+        let currentFilter = 'all';
+        let notifications = [
+            {
+                id: 1,
+                title: "Shipment Update",
+                message: "Your shipment #TB-2024-001 has been delivered successfully.",
+                type: "shipment",
+                priority: "high",
+                timestamp: "2 minutes ago",
+                read: false,
+                icon: "🚚"
+            },
+            {
+                id: 2,
+                title: "Payment Received",
+                message: "Payment of $15,000 has been received for invoice #INV-2024-045.",
+                type: "finance",
+                priority: "medium",
+                timestamp: "1 hour ago",
+                read: false,
+                icon: "💰"
+            },
+            {
+                id: 3,
+                title: "Trade Agreement Signed",
+                message: "Trade agreement with Global Trading Co. has been executed.",
+                type: "trade",
+                priority: "high",
+                timestamp: "3 hours ago",
+                read: true,
+                icon: "🤝"
+            },
+            {
+                id: 4,
+                title: "Wallet Balance Low",
+                message: "Your wallet balance is below the recommended threshold.",
+                type: "wallet",
+                priority: "medium",
+                timestamp: "5 hours ago",
+                read: false,
+                icon: "👛"
+            },
+            {
+                id: 5,
+                title: "Invoice Due Soon",
+                message: "Invoice #INV-2024-046 is due in 2 days.",
+                type: "finance",
+                priority: "high",
+                timestamp: "1 day ago",
+                read: false,
+                icon: "📄"
+            },
+            {
+                id: 6,
+                title: "System Maintenance",
+                message: "Scheduled maintenance will occur tonight from 2-4 AM EST.",
+                type: "system",
+                priority: "low",
+                timestamp: "2 days ago",
+                read: true,
+                icon: "⚙️"
+            }
+        ];
+
+        // Filter functions
+        function toggleFilterDropdown() {
+            const dropdown = document.getElementById('filterDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            const filterText = document.getElementById('filterText');
+            const dropdown = document.getElementById('filterDropdown');
+            
+            switch(filter) {
+                case 'all':
+                    filterText.textContent = 'All Notifications';
+                    break;
+                case 'unread':
+                    filterText.textContent = 'Unread Only';
+                    break;
+                case 'shipment':
+                    filterText.textContent = 'Shipments';
+                    break;
+                case 'finance':
+                    filterText.textContent = 'Finance';
+                    break;
+                case 'wallet':
+                    filterText.textContent = 'Wallet';
+                    break;
+            }
+            
+            dropdown.classList.remove('show');
+            renderNotifications();
+        }
+
+        function markAllAsRead() {
+            const unreadCount = notifications.filter(n => !n.read).length;
+            if (unreadCount === 0) {
+                window.showInfo('No unread notifications to mark');
+                return;
+            }
+
+            window.showLoading('Marking notifications as read...');
+            
+            setTimeout(() => {
+                notifications.forEach(notification => {
+                    notification.read = true;
+                });
+                updateStats();
+                renderNotifications();
+                
+                window.hideLoading();
+                window.showSuccess(`Marked ${unreadCount} notifications as read`, 2000);
+            }, 1000);
+        }
+
+        function markAsRead(notificationId) {
+            const notification = notifications.find(n => n.id === notificationId);
+            if (notification) {
+                notification.read = true;
+                updateStats();
+                renderNotifications();
+            }
+        }
+
+        function updateStats() {
+            const total = notifications.length;
+            const unread = notifications.filter(n => !n.read).length;
+            const shipment = notifications.filter(n => n.type === 'shipment').length;
+            const finance = notifications.filter(n => n.type === 'finance').length;
+
+            document.getElementById('totalNotifications').textContent = total;
+            document.getElementById('unreadNotifications').textContent = unread;
+            document.getElementById('shipmentNotifications').textContent = shipment;
+            document.getElementById('financeNotifications').textContent = finance;
+
+            // Update unread badge
+            const unreadBadge = document.getElementById('unreadBadge');
+            const unreadCount = document.getElementById('unreadCount');
+            if (unread > 0) {
+                unreadBadge.style.display = 'flex';
+                unreadCount.textContent = unread;
+            } else {
+                unreadBadge.style.display = 'none';
+            }
+        }
+
+        function renderNotifications() {
+            const notificationsList = document.getElementById('notificationsList');
+            let filteredNotifications = notifications;
+
+            // Apply filter
+            if (currentFilter !== 'all') {
+                if (currentFilter === 'unread') {
+                    filteredNotifications = notifications.filter(n => !n.read);
+                } else {
+                    filteredNotifications = notifications.filter(n => n.type === currentFilter);
+                }
+            }
+
+            if (filteredNotifications.length === 0) {
+                notificationsList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <h3>No notifications found</h3>
+                        <p>You're all caught up! Check back later for new updates.</p>
+                    </div>
+                `;
+            } else {
+                notificationsList.innerHTML = filteredNotifications.map(notification => `
+                    <div class="notification-card ${notification.read ? 'read' : 'unread'} ${notification.priority}">
+                        <div class="notification-icon">
+                            <div class="notification-emoji">${notification.icon}</div>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-header">
+                                <h3 class="notification-title">${notification.title}</h3>
+                                <div class="notification-meta">
+                                    <span class="notification-time">${notification.timestamp}</span>
+                                    ${!notification.read ? '<div class="unread-indicator"></div>' : ''}
+                                </div>
+                            </div>
+                            <p class="notification-message">${notification.message}</p>
+                            <div class="notification-actions">
+                                ${!notification.read ? `<button class="btn btn-sm btn-outline" onclick="markAsRead(${notification.id})">Mark as Read</button>` : ''}
+                                <button class="btn btn-sm btn-outline">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Language functions
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function selectLanguage(lang) {
+            const dropdown = document.getElementById('languageDropdown');
+            dropdown.classList.remove('show');
+            // Language selection logic here
+        }
+
+        // User dropdown functions
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function navigateToPage(page) {
+            window.location.href = page + '.html';
+        }
+
+        function logout() {
+            // Logout logic here
+            alert('Logout functionality would be implemented here');
+        }
+
+        // Close dropdowns when clicking outside
+        window.onclick = function(event) {
+            const languageDropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            const filterDropdown = document.getElementById('filterDropdown');
+            
+            if (!event.target.closest('.dropdown-container')) {
+                languageDropdown.classList.remove('show');
+                userDropdown.classList.remove('show');
+                filterDropdown.classList.remove('show');
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
+            renderNotifications();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - TradeBridge</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="settings.css">
+    <script src="sidebar-toggle.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <span class="logo-text-small">TB</span>
+                </div>
+                <span class="logo-text">TradeBridge</span>
+            </a>
+            <div class="header-actions">
+                
+                <!-- Language Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleLanguageDropdown()">
+                        <div class="worldwide-icon">🌍</div>
+                        <span>EN</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="languageDropdown">
+                        <div class="dropdown-item" onclick="selectLanguage('en')">
+                            <span>English</span>
+                            <img src="icons/check.svg" alt="Selected" width="16" height="16" class="check-icon">
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('es')">
+                            <span>Español</span>
+                        </div>
+                        <div class="dropdown-item" onclick="selectLanguage('fr')">
+                            <span>Français</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Profile Dropdown -->
+                <div class="dropdown-container">
+                    <button class="dropdown-trigger" onclick="toggleUserDropdown()">
+                        <div class="user-avatar">JD</div>
+                        <span class="user-name">John Doe</span>
+                        <img src="icons/chevron-down.svg" alt="Dropdown" width="16" height="16">
+                    </button>
+                    <div class="dropdown-menu" id="userDropdown">
+                        <div class="dropdown-item" onclick="navigateToPage('profile')">
+                            <img src="icons/user.svg" alt="Profile" width="16" height="16">
+                            <span>Profile</span>
+                        </div>
+                        <div class="dropdown-item" onclick="navigateToPage('settings')">
+                            <div class="settings-icon-small">⚙️</div>
+                            <span>Settings</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item logout" onclick="logout()">
+                            <img src="icons/logout.svg" alt="Logout" width="16" height="16">
+                            <span>Logout</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="dashboard-icon">📊</div>
+                    </div>
+                    <span>Dashboard</span>
+                </a>
+                <a href="trade-agreement.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="trade-agreement-icon">🤝</div>
+                    </div>
+                    <span>Trade Agreements</span>
+                </a>
+                <a href="invoice-financing.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="invoice-financing-icon">🧾</div>
+                    </div>
+                    <span>Invoice Financing</span>
+                </a>
+                <a href="wallet.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="wallet-icon">👛</div>
+                    </div>
+                    <span>Wallet</span>
+                </a>
+                <a href="shipment-tracker.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="shipment-tracker-icon">🚚</div>
+                    </div>
+                    <span>Shipment Tracker <span class="nav-badge-text">(3)</span></span>
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <div class="nav-icon">
+                        <div class="notifications-icon">📢</div>
+                    </div>
+                    <span>Notifications <span class="nav-badge-text">(5)</span></span>
+                </a>
+                <a href="settings.html" class="nav-item active">
+                    <div class="nav-icon">
+                        <div class="settings-icon">⚙️</div>
+                    </div>
+                    <span>Settings</span>
+                    <div class="nav-arrow">
+                        <img src="icons/chevron-right.svg" alt="Arrow" width="16" height="16">
+                    </div>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <div class="header-text">
+                    <h1>Settings</h1>
+                    <p>Manage your account settings and preferences</p>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-button active" onclick="switchTab('profile')" data-tab="profile">
+                    <img src="icons/user.svg" alt="Profile" width="16" height="16">
+                    Profile
+                </button>
+                <button class="tab-button" onclick="switchTab('preferences')" data-tab="preferences">
+                    <div class="preferences-icon">🎚️</div>
+                    Preferences
+                </button>
+                <button class="tab-button" onclick="switchTab('security')" data-tab="security">
+                    <img src="icons/shield.svg" alt="Security" width="16" height="16">
+                    Security
+                </button>
+                <button class="tab-button" onclick="switchTab('kyc')" data-tab="kyc">
+                    <img src="icons/shield.svg" alt="KYC" width="16" height="16">
+                    KYC Status
+                </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Profile Tab -->
+                <div class="tab-panel active" id="profileTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <img src="icons/user.svg" alt="User" width="20" height="20">
+                                Profile Information
+                            </h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="profile-section">
+                                <div class="avatar-section">
+                                    <div class="avatar">
+                                        <div class="avatar-fallback">JD</div>
+                                    </div>
+                                    <div class="avatar-actions">
+                                        <button class="btn btn-outline" onclick="changePhoto()">
+                                            Change Photo
+                                        </button>
+                                        <p class="avatar-hint">JPG, PNG or GIF. Max size 2MB.</p>
+                                    </div>
+                                </div>
+
+                                <form class="profile-form">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="firstName">First Name</label>
+                                            <input type="text" id="firstName" value="John" oninput="updateProfile()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lastName">Last Name</label>
+                                            <input type="text" id="lastName" value="Doe" oninput="updateProfile()">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="email">Email Address</label>
+                                        <input type="email" id="email" value="john.doe@example.com" oninput="updateProfile()">
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="company">Company</label>
+                                            <input type="text" id="company" value="Global Trade Corp" oninput="updateProfile()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Phone Number</label>
+                                            <input type="tel" id="phone" value="+1 (555) 123-4567" oninput="updateProfile()">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="country">Country</label>
+                                        <select id="country" onchange="updateProfile()">
+                                            <option value="United States" selected>United States</option>
+                                            <option value="United Kingdom">United Kingdom</option>
+                                            <option value="Germany">Germany</option>
+                                            <option value="France">France</option>
+                                            <option value="Canada">Canada</option>
+                                            <option value="Australia">Australia</option>
+                                        </select>
+                                    </div>
+
+                                    <button type="button" class="btn btn-primary" onclick="saveProfile()">
+                                        Save Changes
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preferences Tab -->
+                <div class="tab-panel" id="preferencesTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <img src="icons/settings.svg" alt="Settings" width="20" height="20">
+                                General Preferences
+                            </h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Language</label>
+                                    <select id="language" onchange="updatePreferences()">
+                                        <option value="en" selected>🇺🇸 English</option>
+                                        <option value="es">🇪🇸 Español</option>
+                                        <option value="fr">🇫🇷 Français</option>
+                                        <option value="de">🇩🇪 Deutsch</option>
+                                        <option value="zh">🇨🇳 中文</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Timezone</label>
+                                    <select id="timezone" onchange="updatePreferences()">
+                                        <option value="America/New_York" selected>Eastern Time</option>
+                                        <option value="America/Chicago">Central Time</option>
+                                        <option value="America/Denver">Mountain Time</option>
+                                        <option value="America/Los_Angeles">Pacific Time</option>
+                                        <option value="Europe/London">GMT</option>
+                                        <option value="Europe/Paris">CET</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Currency</label>
+                                    <select id="currency" onchange="updatePreferences()">
+                                        <option value="USD" selected>USD ($)</option>
+                                        <option value="EUR">EUR (€)</option>
+                                        <option value="GBP">GBP (£)</option>
+                                        <option value="JPY">JPY (¥)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <img src="icons/bell.svg" alt="Notifications" width="20" height="20">
+                                Notification Preferences
+                            </h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="preference-item">
+                                <div class="preference-info">
+                                    <h4>Email Notifications</h4>
+                                    <p>Receive updates via email</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="emailNotifications" checked onchange="updatePreferences()">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="preference-item">
+                                <div class="preference-info">
+                                    <h4>Push Notifications</h4>
+                                    <p>Browser notifications for urgent updates</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="pushNotifications" checked onchange="updatePreferences()">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="preference-item">
+                                <div class="preference-info">
+                                    <h4>SMS Notifications</h4>
+                                    <p>Text messages for critical alerts</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="smsNotifications" onchange="updatePreferences()">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="preference-item">
+                                <div class="preference-info">
+                                    <h4>Marketing Emails</h4>
+                                    <p>Product updates and newsletters</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="marketingEmails" onchange="updatePreferences()">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Tab -->
+                <div class="tab-panel" id="securityTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <img src="icons/shield.svg" alt="Security" width="20" height="20">
+                                Security Settings
+                            </h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="security-item">
+                                <div class="security-info">
+                                    <div class="security-icon enabled">
+                                        <img src="icons/check-circle.svg" alt="Enabled" width="20" height="20">
+                                    </div>
+                                    <div class="security-details">
+                                        <h4>Two-Factor Authentication</h4>
+                                        <p id="twoFactorStatus">Enabled</p>
+                                    </div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="twoFactorEnabled" checked onchange="updateSecurity()">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="security-item">
+                                <div class="security-info">
+                                    <div class="security-icon warning">
+                                        <img src="icons/alert-triangle.svg" alt="Warning" width="20" height="20">
+                                    </div>
+                                    <div class="security-details">
+                                        <h4>Wallet Backup</h4>
+                                        <p id="walletBackupStatus">Backup recommended</p>
+                                    </div>
+                                </div>
+                                <button class="btn btn-outline btn-sm" onclick="backupWallet()">
+                                    <img src="icons/download.svg" alt="Download" width="16" height="16">
+                                    Backup Now
+                                </button>
+                            </div>
+
+                            <div class="password-section">
+                                <h4>Change Password</h4>
+                                <div class="password-form">
+                                    <input type="password" placeholder="Current password">
+                                    <input type="password" placeholder="New password">
+                                    <input type="password" placeholder="Confirm new password">
+                                    <button type="button" class="btn btn-primary" onclick="updatePassword()">
+                                        Update Password
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="api-section">
+                                <h4>API Keys</h4>
+                                <div class="api-item">
+                                    <div class="api-info">
+                                        <h5>Trading API Key</h5>
+                                        <p>Last used: 2 hours ago</p>
+                                    </div>
+                                    <button class="btn btn-outline btn-sm" onclick="regenerateApiKey()">
+                                        <img src="icons/key.svg" alt="Key" width="16" height="16">
+                                        Regenerate
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KYC Tab -->
+                <div class="tab-panel" id="kycTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <img src="icons/shield.svg" alt="KYC" width="20" height="20">
+                                KYC Verification Status
+                            </h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="kyc-progress">
+                                <div class="progress-header">
+                                    <div>
+                                        <h4>Verification Progress</h4>
+                                        <p>Complete all steps to unlock full features</p>
+                                    </div>
+                                    <div class="progress-badge" id="kycProgressBadge">85% Complete</div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 85%"></div>
+                                </div>
+                            </div>
+
+                            <div class="kyc-steps">
+                                <div class="kyc-step completed">
+                                    <div class="step-icon">
+                                        <img src="icons/check-circle.svg" alt="Completed" width="16" height="16">
+                                    </div>
+                                    <div class="step-content">
+                                        <h5>Personal Information</h5>
+                                    </div>
+                                </div>
+
+                                <div class="kyc-step completed">
+                                    <div class="step-icon">
+                                        <img src="icons/check-circle.svg" alt="Completed" width="16" height="16">
+                                    </div>
+                                    <div class="step-content">
+                                        <h5>Company Verification</h5>
+                                    </div>
+                                </div>
+
+                                <div class="kyc-step completed">
+                                    <div class="step-icon">
+                                        <img src="icons/check-circle.svg" alt="Completed" width="16" height="16">
+                                    </div>
+                                    <div class="step-content">
+                                        <h5>Bank Account Details</h5>
+                                    </div>
+                                </div>
+
+                                <div class="kyc-step pending">
+                                    <div class="step-icon">
+                                        <div class="step-dot"></div>
+                                    </div>
+                                    <div class="step-content">
+                                        <h5>Document Upload</h5>
+                                    </div>
+                                    <button class="btn btn-outline btn-sm" onclick="completeStep('document')">
+                                        Complete
+                                    </button>
+                                </div>
+
+                                <div class="kyc-step pending">
+                                    <div class="step-icon">
+                                        <div class="step-dot"></div>
+                                    </div>
+                                    <div class="step-content">
+                                        <h5>Final Review</h5>
+                                    </div>
+                                    <button class="btn btn-outline btn-sm" onclick="completeStep('review')">
+                                        Complete
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="kyc-benefits">
+                                <h4>Benefits of Full Verification</h4>
+                                <ul>
+                                    <li>• Higher transaction limits</li>
+                                    <li>• Access to premium DeFi pools</li>
+                                    <li>• Priority customer support</li>
+                                    <li>• Advanced trading features</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="card danger-zone">
+                <div class="card-header">
+                    <h2 class="card-title danger">Danger Zone</h2>
+                </div>
+                <div class="card-content">
+                    <div class="danger-item">
+                        <div class="danger-info">
+                            <h4>Sign Out</h4>
+                            <p>Sign out of your account on this device</p>
+                        </div>
+                        <button class="btn btn-outline" onclick="signOut()">
+                            <img src="icons/logout.svg" alt="Sign Out" width="16" height="16">
+                            Sign Out
+                        </button>
+                    </div>
+                    
+                    <div class="danger-item">
+                        <div class="danger-info">
+                            <h4 class="danger-text">Delete Account</h4>
+                            <p>Permanently delete your account and all data</p>
+                        </div>
+                        <button class="btn btn-danger" onclick="deleteAccount()">
+                            Delete Account
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // State management
+        let profile = {
+            firstName: "John",
+            lastName: "Doe",
+            email: "john.doe@example.com",
+            company: "Global Trade Corp",
+            phone: "+1 (555) 123-4567",
+            country: "United States"
+        };
+
+        let preferences = {
+            language: "en",
+            timezone: "America/New_York",
+            currency: "USD",
+            emailNotifications: true,
+            pushNotifications: true,
+            smsNotifications: false,
+            marketingEmails: false
+        };
+
+        let security = {
+            twoFactorEnabled: true,
+            walletBackedUp: false
+        };
+
+        let activeTab = 'profile';
+
+        // Navigation functions
+        function navigateToPage(page) {
+            window.location.href = page + '.html';
+        }
+
+        function toggleNotifications() {
+            console.log('Toggle notifications');
+        }
+
+        // Dropdown functionality
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            userDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            const languageDropdown = document.getElementById('languageDropdown');
+            
+            languageDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function selectLanguage(lang) {
+            const languageSpan = document.querySelector('.dropdown-trigger span');
+            const languageMap = {
+                'en': 'EN',
+                'es': 'ES',
+                'fr': 'FR'
+            };
+            
+            languageSpan.textContent = languageMap[lang];
+            document.getElementById('languageDropdown').classList.remove('show');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Tab functionality
+        function switchTab(tabName) {
+            // Update active tab button
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+            // Update active tab panel
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById(tabName + 'Tab').classList.add('active');
+
+            activeTab = tabName;
+        }
+
+        // Profile functions
+        function updateProfile() {
+            profile.firstName = document.getElementById('firstName').value;
+            profile.lastName = document.getElementById('lastName').value;
+            profile.email = document.getElementById('email').value;
+            profile.company = document.getElementById('company').value;
+            profile.phone = document.getElementById('phone').value;
+            profile.country = document.getElementById('country').value;
+        }
+
+        function saveProfile() {
+            updateProfile();
+            alert('Profile updated successfully!');
+        }
+
+        function changePhoto() {
+            alert('Photo upload functionality would be implemented here');
+        }
+
+        // Preferences functions
+        function updatePreferences() {
+            preferences.language = document.getElementById('language').value;
+            preferences.timezone = document.getElementById('timezone').value;
+            preferences.currency = document.getElementById('currency').value;
+            preferences.emailNotifications = document.getElementById('emailNotifications').checked;
+            preferences.pushNotifications = document.getElementById('pushNotifications').checked;
+            preferences.smsNotifications = document.getElementById('smsNotifications').checked;
+            preferences.marketingEmails = document.getElementById('marketingEmails').checked;
+        }
+
+        // Security functions
+        function updateSecurity() {
+            security.twoFactorEnabled = document.getElementById('twoFactorEnabled').checked;
+            updateSecurityStatus();
+        }
+
+        function updateSecurityStatus() {
+            const twoFactorStatus = document.getElementById('twoFactorStatus');
+            const walletBackupStatus = document.getElementById('walletBackupStatus');
+            
+            twoFactorStatus.textContent = security.twoFactorEnabled ? 'Enabled' : 'Disabled';
+            walletBackupStatus.textContent = security.walletBackedUp ? 'Backup completed' : 'Backup recommended';
+        }
+
+        function backupWallet() {
+            security.walletBackedUp = true;
+            updateSecurityStatus();
+            alert('Wallet backup completed!');
+        }
+
+        function updatePassword() {
+            alert('Password update functionality would be implemented here');
+        }
+
+        function regenerateApiKey() {
+            if (confirm('Are you sure you want to regenerate your API key? This will invalidate the current key.')) {
+                alert('API key regenerated successfully!');
+            }
+        }
+
+        // KYC functions
+        function completeStep(step) {
+            alert(`${step} step completion functionality would be implemented here`);
+        }
+
+        // Danger zone functions
+        function signOut() {
+            if (confirm('Are you sure you want to sign out?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        function deleteAccount() {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                if (confirm('This will permanently delete all your data. Type "DELETE" to confirm.')) {
+                    alert('Account deletion functionality would be implemented here');
+                }
+            }
+        }
+
+        // Close dropdowns when clicking outside
+        window.onclick = function(event) {
+            const languageDropdown = document.getElementById('languageDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            if (!event.target.closest('.dropdown-container')) {
+                languageDropdown.classList.remove('show');
+                userDropdown.classList.remove('show');
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSecurityStatus();
+        });
+    </script>
+</body>
+</html>
