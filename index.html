@@ -22,7 +22,7 @@
                 </div>
                 <div class="header-actions">
                     <button class="btn btn-outline" onclick="window.location.href='dashboard.html'">Log In</button>
-                    <button class="btn btn-primary" onclick="window.location.href='dashboard.html'">
+                    <button class="btn btn-primary" onclick="openSignupModal()">
                         Get Started
                         <img src="icons/arrow-right.svg" alt="Arrow" width="16" height="16">
                     </button>
@@ -49,7 +49,7 @@
                     international trade.
                 </p>
                 <div class="hero-actions">
-                    <button class="btn btn-primary btn-large" onclick="window.location.href='dashboard.html'">
+                    <button class="btn btn-primary btn-large" onclick="openSignupModal()">
                         Start Trading Now
                         <img src="icons/arrow-right.svg" alt="Arrow" width="20" height="20">
                     </button>
@@ -162,7 +162,7 @@
                             <span>Access global liquidity pools 24/7</span>
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-large" onclick="window.location.href='dashboard.html'">
+                    <button class="btn btn-primary btn-large" onclick="openSignupModal()">
                         Get Started Today
                         <img src="icons/arrow-right.svg" alt="Arrow" width="20" height="20">
                     </button>
@@ -213,7 +213,7 @@
                     Join TradeBridge today and experience the future of international trade.
                 </p>
                 <div class="cta-actions">
-                    <button class="btn btn-primary btn-large" onclick="window.location.href='dashboard.html'">
+                    <button class="btn btn-primary btn-large" onclick="openSignupModal()">
                         Create Free Account
                         <img src="icons/arrow-right.svg" alt="Arrow" width="20" height="20">
                     </button>
@@ -284,6 +284,450 @@
                 header.classList.remove('scrolled');
             }
         });
+    </script>
+
+    <!-- Sign Up Modal -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content signup-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <img src="icons/user.svg" alt="Sign Up" width="24" height="24">
+                    Create Your Account
+                </h2>
+                <button class="modal-close" onclick="closeSignupModal()">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Progress Indicator -->
+                <div class="signup-progress">
+                    <div class="progress-step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Personal Info</div>
+                    </div>
+                    <div class="progress-step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Documents</div>
+                    </div>
+                    <div class="progress-step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Verification</div>
+                    </div>
+                </div>
+
+                <!-- Step 1: Personal Information -->
+                <div class="signup-step active" id="step1">
+                    <h3>Personal Information</h3>
+                    <form class="signup-form" id="personalInfoForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company">Company Name *</label>
+                            <input type="text" id="company" name="company" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">Password *</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password *</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Step 2: Document Upload -->
+                <div class="signup-step" id="step2">
+                    <h3>Document Verification</h3>
+                    <p class="step-description">Upload required documents for verification</p>
+                    
+                    <!-- CAC Documents -->
+                    <div class="document-section">
+                        <h4>CAC Documents</h4>
+                        <div class="document-upload">
+                            <div class="upload-item">
+                                <label class="upload-label">
+                                    <div class="upload-icon">
+                                        <img src="icons/file-text.svg" alt="Upload" width="24" height="24">
+                                    </div>
+                                    <div class="upload-content">
+                                        <span class="upload-title">Certificate of Incorporation</span>
+                                        <span class="upload-subtitle">PDF, JPG, PNG up to 5MB</span>
+                                    </div>
+                                    <input type="file" id="cacCertificate" accept=".pdf,.jpg,.png,.jpeg" onchange="handleDocumentUpload('cacCertificate', this)">
+                                </label>
+                                <div class="upload-status" id="cacCertificateStatus"></div>
+                            </div>
+                            
+                            <div class="upload-item">
+                                <label class="upload-label">
+                                    <div class="upload-icon">
+                                        <img src="icons/file-text.svg" alt="Upload" width="24" height="24">
+                                    </div>
+                                    <div class="upload-content">
+                                        <span class="upload-title">Memorandum & Articles of Association</span>
+                                        <span class="upload-subtitle">PDF, JPG, PNG up to 5MB</span>
+                                    </div>
+                                    <input type="file" id="cacMemorandum" accept=".pdf,.jpg,.png,.jpeg" onchange="handleDocumentUpload('cacMemorandum', this)">
+                                </label>
+                                <div class="upload-status" id="cacMemorandumStatus"></div>
+                            </div>
+                            
+                            <div class="upload-item">
+                                <label class="upload-label">
+                                    <div class="upload-icon">
+                                        <img src="icons/file-text.svg" alt="Upload" width="24" height="24">
+                                    </div>
+                                    <div class="upload-content">
+                                        <span class="upload-title">Form CAC 2.3 (Particulars of Directors)</span>
+                                        <span class="upload-subtitle">PDF, JPG, PNG up to 5MB</span>
+                                    </div>
+                                    <input type="file" id="cacDirectors" accept=".pdf,.jpg,.png,.jpeg" onchange="handleDocumentUpload('cacDirectors', this)">
+                                </label>
+                                <div class="upload-status" id="cacDirectorsStatus"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- BVN Verification -->
+                    <div class="document-section">
+                        <h4>Bank Verification Number (BVN)</h4>
+                        <div class="form-group">
+                            <label for="bvnNumber">BVN Number *</label>
+                            <input type="text" id="bvnNumber" name="bvnNumber" maxlength="11" placeholder="Enter your 11-digit BVN" required>
+                            <div class="bvn-info">
+                                <span class="info-icon">ℹ️</span>
+                                <span class="info-text">Your BVN will be verified with the bank for identity confirmation</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Documents -->
+                    <div class="document-section">
+                        <h4>Additional Documents</h4>
+                        <div class="upload-item">
+                            <label class="upload-label">
+                                <div class="upload-icon">
+                                    <img src="icons/file-text.svg" alt="Upload" width="24" height="24">
+                                </div>
+                                <div class="upload-content">
+                                    <span class="upload-title">Bank Statement (Last 3 months)</span>
+                                    <span class="upload-subtitle">PDF, JPG, PNG up to 5MB</span>
+                                </div>
+                                <input type="file" id="bankStatement" accept=".pdf,.jpg,.png,.jpeg" onchange="handleDocumentUpload('bankStatement', this)">
+                            </label>
+                            <div class="upload-status" id="bankStatementStatus"></div>
+                        </div>
+                        
+                        <div class="upload-item">
+                            <label class="upload-label">
+                                <div class="upload-icon">
+                                    <img src="icons/file-text.svg" alt="Upload" width="24" height="24">
+                                </div>
+                                <div class="upload-content">
+                                    <span class="upload-title">Tax Identification Number (TIN)</span>
+                                    <span class="upload-subtitle">PDF, JPG, PNG up to 5MB</span>
+                                </div>
+                                <input type="file" id="tinDocument" accept=".pdf,.jpg,.png,.jpeg" onchange="handleDocumentUpload('tinDocument', this)">
+                            </label>
+                            <div class="upload-status" id="tinDocumentStatus"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Verification -->
+                <div class="signup-step" id="step3">
+                    <h3>Verification & Review</h3>
+                    <div class="verification-summary">
+                        <div class="verification-item">
+                            <div class="verification-icon">✅</div>
+                            <div class="verification-content">
+                                <h4>Personal Information</h4>
+                                <p>All personal details have been collected</p>
+                            </div>
+                        </div>
+                        
+                        <div class="verification-item">
+                            <div class="verification-icon">📄</div>
+                            <div class="verification-content">
+                                <h4>Documents Uploaded</h4>
+                                <p id="documentsCount">0 documents uploaded</p>
+                            </div>
+                        </div>
+                        
+                        <div class="verification-item">
+                            <div class="verification-icon">🔐</div>
+                            <div class="verification-content">
+                                <h4>BVN Verification</h4>
+                                <p id="bvnStatus">Pending verification</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="verification-note">
+                        <div class="note-icon">ℹ️</div>
+                        <div class="note-content">
+                            <h4>Verification Process</h4>
+                            <p>Your documents will be reviewed within 24-48 hours. You'll receive an email notification once verification is complete.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <div class="modal-actions">
+                    <button class="btn btn-outline" id="prevBtn" onclick="previousStep()" style="display: none;">Previous</button>
+                    <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">Next Step</button>
+                    <button class="btn btn-primary" id="submitBtn" onclick="submitSignup()" style="display: none;">Create Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sign-up modal functionality
+        let currentStep = 1;
+        const totalSteps = 3;
+        let uploadedDocuments = {};
+
+        function openSignupModal() {
+            document.getElementById('signupModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSignupModal() {
+            document.getElementById('signupModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            resetSignupForm();
+        }
+
+        function resetSignupForm() {
+            currentStep = 1;
+            uploadedDocuments = {};
+            updateProgress();
+            updateStepVisibility();
+            updateButtons();
+        }
+
+        function nextStep() {
+            if (validateCurrentStep()) {
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    updateProgress();
+                    updateStepVisibility();
+                    updateButtons();
+                }
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateProgress();
+                updateStepVisibility();
+                updateButtons();
+            }
+        }
+
+        function updateProgress() {
+            document.querySelectorAll('.progress-step').forEach((step, index) => {
+                if (index + 1 <= currentStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+
+        function updateStepVisibility() {
+            document.querySelectorAll('.signup-step').forEach((step, index) => {
+                if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+
+            prevBtn.style.display = currentStep > 1 ? 'block' : 'none';
+            
+            if (currentStep === totalSteps) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        function validateCurrentStep() {
+            if (currentStep === 1) {
+                return validatePersonalInfo();
+            } else if (currentStep === 2) {
+                return validateDocuments();
+            }
+            return true;
+        }
+
+        function validatePersonalInfo() {
+            const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'company', 'password', 'confirmPassword'];
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                const input = document.getElementById(field);
+                if (!input.value.trim()) {
+                    showFieldError(input, 'This field is required');
+                    isValid = false;
+                } else {
+                    clearFieldError(input);
+                }
+            });
+
+            // Validate password match
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            if (password !== confirmPassword) {
+                showFieldError(document.getElementById('confirmPassword'), 'Passwords do not match');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function validateDocuments() {
+            const bvnNumber = document.getElementById('bvnNumber').value;
+            if (!bvnNumber || bvnNumber.length !== 11) {
+                showFieldError(document.getElementById('bvnNumber'), 'Please enter a valid 11-digit BVN');
+                return false;
+            }
+            return true;
+        }
+
+        function showFieldError(input, message) {
+            clearFieldError(input);
+            input.classList.add('error');
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'field-error';
+            errorDiv.textContent = message;
+            input.parentNode.appendChild(errorDiv);
+        }
+
+        function clearFieldError(input) {
+            input.classList.remove('error');
+            const existingError = input.parentNode.querySelector('.field-error');
+            if (existingError) {
+                existingError.remove();
+            }
+        }
+
+        function handleDocumentUpload(documentType, input) {
+            const file = input.files[0];
+            if (file) {
+                uploadedDocuments[documentType] = file;
+                updateDocumentStatus(documentType, 'uploaded');
+                updateDocumentsCount();
+            }
+        }
+
+        function updateDocumentStatus(documentType, status) {
+            const statusElement = document.getElementById(documentType + 'Status');
+            if (statusElement) {
+                statusElement.className = 'upload-status ' + status;
+                statusElement.textContent = status === 'uploaded' ? '✅ Uploaded' : '❌ Required';
+            }
+        }
+
+        function updateDocumentsCount() {
+            const count = Object.keys(uploadedDocuments).length;
+            document.getElementById('documentsCount').textContent = `${count} documents uploaded`;
+        }
+
+        function submitSignup() {
+            if (validateCurrentStep()) {
+                // Simulate account creation
+                showToast('Creating your account...', 'info');
+                
+                setTimeout(() => {
+                    showToast('Account created successfully! Verification in progress.', 'success');
+                    closeSignupModal();
+                    
+                    // Redirect to dashboard after successful signup
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 2000);
+                }, 3000);
+            }
+        }
+
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 10000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                ${type === 'success' ? 'background: #10B981;' : 
+                  type === 'error' ? 'background: #EF4444;' : 
+                  'background: #3B82F6;'}
+            `;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.transform = 'translateX(0)';
+            }, 100);
+
+            setTimeout(() => {
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('signupModal');
+            if (event.target === modal) {
+                closeSignupModal();
+            }
+        }
     </script>
 </body>
 </html>
