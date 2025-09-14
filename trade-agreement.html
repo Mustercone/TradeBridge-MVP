@@ -371,19 +371,21 @@
 
         // Dropdown functionality
         function toggleLanguageDropdown() {
+            console.log('Toggling language dropdown');
             const dropdown = document.getElementById('languageDropdown');
             const userDropdown = document.getElementById('userDropdown');
             
-            userDropdown.classList.remove('show');
-            dropdown.classList.toggle('show');
+            if (userDropdown) userDropdown.classList.remove('show');
+            if (dropdown) dropdown.classList.toggle('show');
         }
 
         function toggleUserDropdown() {
+            console.log('Toggling user dropdown');
             const dropdown = document.getElementById('userDropdown');
             const languageDropdown = document.getElementById('languageDropdown');
             
-            languageDropdown.classList.remove('show');
-            dropdown.classList.toggle('show');
+            if (languageDropdown) languageDropdown.classList.remove('show');
+            if (dropdown) dropdown.classList.toggle('show');
         }
 
         function selectLanguage(lang) {
@@ -394,8 +396,9 @@
                 'fr': 'FR'
             };
             
-            languageSpan.textContent = languageMap[lang];
-            document.getElementById('languageDropdown').classList.remove('show');
+            if (languageSpan) languageSpan.textContent = languageMap[lang];
+            const dropdown = document.getElementById('languageDropdown');
+            if (dropdown) dropdown.classList.remove('show');
         }
 
         function logout() {
