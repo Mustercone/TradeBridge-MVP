@@ -594,8 +594,29 @@
             }
         }
 
+        // Initialize user profile from stored data
+        function initializeUserProfile() {
+            if (window.userDataManager && window.userDataManager.hasCompletedSignup()) {
+                const userData = window.userDataManager.getAllUserData();
+                const personalInfo = userData.personalInfo;
+                
+                // Update header user info
+                const userAvatar = document.querySelector('.user-avatar');
+                const userName = document.querySelector('.user-name');
+                
+                if (userAvatar && personalInfo.initials) {
+                    userAvatar.textContent = personalInfo.initials;
+                }
+                
+                if (userName && personalInfo.fullName) {
+                    userName.textContent = personalInfo.fullName;
+                }
+            }
+        }
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
+            initializeUserProfile();
             loadShipments();
             updateShipmentDetails();
             updateTrackingTimeline();

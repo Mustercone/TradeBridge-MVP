@@ -21,7 +21,7 @@
                     <span class="logo-text">TradeBridge</span>
                 </div>
                 <div class="header-actions">
-                    <button class="btn btn-outline" onclick="window.location.href='dashboard.html'">Log In</button>
+                    <button class="btn btn-outline" onclick="openLoginModal()">Log In</button>
                     <button class="btn btn-primary" onclick="openSignupModal()">
                         Get Started
                         <img src="icons/arrow-right.svg" alt="Arrow" width="16" height="16">
@@ -507,6 +507,68 @@
         </div>
     </div>
 
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content login-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <img src="icons/user.svg" alt="Login" width="24" height="24">
+                    Welcome Back
+                </h2>
+                <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="login-form">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                        <div class="field-error" id="loginEmailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                        <div class="field-error" id="loginPasswordError"></div>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="rememberMe">
+                            <span class="checkmark"></span>
+                            Remember me
+                        </label>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-full" onclick="handleLogin()">
+                        <img src="icons/user.svg" alt="Login" width="20" height="20">
+                        Sign In
+                    </button>
+                    
+                    <div class="login-divider">
+                        <span>Or continue with</span>
+                    </div>
+                    
+                    <div class="social-login">
+                        <button class="btn btn-social" onclick="handleGoogleLogin()">
+                            <img src="assets/icons/google.svg" alt="Google" width="20" height="20">
+                            Google
+                        </button>
+                        <button class="btn btn-social" onclick="handleMicrosoftLogin()">
+                            <img src="assets/icons/microsoft.svg" alt="Microsoft" width="20" height="20">
+                            Microsoft
+                        </button>
+                    </div>
+                    
+                    <div class="login-footer">
+                        <p>Don't have an account? <a href="#" onclick="switchToSignup()">Sign up here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Sign-up modal functionality
         let currentStep = 1;
@@ -522,6 +584,147 @@
             document.getElementById('signupModal').style.display = 'none';
             document.body.style.overflow = 'auto';
             resetSignupForm();
+        }
+
+        // Login Modal Functions
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            resetLoginForm();
+        }
+
+        function resetLoginForm() {
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('rememberMe').checked = false;
+            clearLoginErrors();
+        }
+
+        function clearLoginErrors() {
+            document.getElementById('loginEmailError').textContent = '';
+            document.getElementById('loginPasswordError').textContent = '';
+            document.getElementById('loginEmail').classList.remove('error');
+            document.getElementById('loginPassword').classList.remove('error');
+        }
+
+        function switchToSignup() {
+            closeLoginModal();
+            openSignupModal();
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            // Clear previous errors
+            clearLoginErrors();
+
+            // Validate inputs
+            let isValid = true;
+
+            if (!email) {
+                showLoginFieldError('loginEmail', 'Email is required');
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                showLoginFieldError('loginEmail', 'Please enter a valid email address');
+                isValid = false;
+            }
+
+            if (!password) {
+                showLoginFieldError('loginPassword', 'Password is required');
+                isValid = false;
+            } else if (password.length < 6) {
+                showLoginFieldError('loginPassword', 'Password must be at least 6 characters');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                return;
+            }
+
+            // Check if user exists in stored data
+            if (window.userDataManager && window.userDataManager.hasCompletedSignup()) {
+                const userData = window.userDataManager.getAllUserData();
+                
+                if (userData.personalInfo.email === email) {
+                    // Simulate password verification (in real app, this would be server-side)
+                    if (password === 'password123' || password === 'demo') {
+                        // Login successful
+                        window.userDataManager.updateLastLogin();
+                        
+                        // Store login session
+                        if (rememberMe) {
+                            localStorage.setItem('tradebridgeRememberMe', 'true');
+                            localStorage.setItem('tradebridgeUserEmail', email);
+                        }
+                        
+                        showToast('Login successful! Welcome back.', 'success');
+                        
+                        // Close modal and redirect to dashboard
+                        setTimeout(() => {
+                            closeLoginModal();
+                            window.location.href = 'dashboard.html';
+                        }, 1000);
+                        
+                        return;
+                    } else {
+                        showLoginFieldError('loginPassword', 'Invalid password');
+                        return;
+                    }
+                } else {
+                    showLoginFieldError('loginEmail', 'No account found with this email');
+                    return;
+                }
+            } else {
+                showLoginFieldError('loginEmail', 'No account found. Please sign up first.');
+                return;
+            }
+        }
+
+        function showLoginFieldError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(fieldId + 'Error');
+            
+            field.classList.add('error');
+            errorElement.textContent = message;
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function showToast(message, type = 'info') {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <span class="toast-message">${message}</span>
+                </div>
+            `;
+            
+            // Add to page
+            document.body.appendChild(toast);
+            
+            // Show toast
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
         }
 
         function resetSignupForm() {
