@@ -13,6 +13,8 @@
     <script src="export-functionality.js"></script>
     <script src="realtime-updates.js"></script>
     <script src="sidebar-toggle.js"></script>
+    <script src="api-client.js"></script>
+    <script src="user-data-manager.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -137,7 +139,7 @@
                 <div class="page-header">
                     <div class="header-text">
                         <h1>Dashboard</h1>
-                        <p>Welcome back, John. Here's your trade overview.</p>
+                        <p id="welcomeMessage">Welcome back! Here's your trade overview.</p>
                     </div>
                     <div class="header-actions">
                         <button class="btn btn-outline" onclick="refreshData()">
@@ -502,23 +504,272 @@
 
 
         // Initialize user profile from stored data
-        function initializeUserProfile() {
-            if (window.userDataManager && window.userDataManager.hasCompletedSignup()) {
-                const userData = window.userDataManager.getAllUserData();
-                const personalInfo = userData.personalInfo;
-                
-                // Update header user info
-                const userAvatar = document.querySelector('.user-avatar');
-                const userName = document.querySelector('.user-name');
-                
-                if (userAvatar && personalInfo.initials) {
-                    userAvatar.textContent = personalInfo.initials;
+        async function initializeUserProfile() {
+            try {
+                let userData = null;
+                let personalInfo = null;
+
+                // Try to get data from backend API first
+                if (window.tradeBridgeAPI && window.tradeBridgeAPI.isAuthenticated()) {
+                    try {
+                        const profileData = await window.tradeBridgeAPI.getUserProfile();
+                        userData = profileData.user;
+                        personalInfo = {
+                            firstName: userData.firstName,
+                            lastName: userData.lastName,
+                            fullName: `${userData.firstName} ${userData.lastName}`,
+                            initials: `${userData.firstName.charAt(0)}${userData.lastName.charAt(0)}`.toUpperCase(),
+                            email: userData.email,
+                            company: userData.company
+                        };
+                    } catch (error) {
+                        console.log('Backend not available, using local data');
+                    }
                 }
+
+                // Fallback to local storage
+                if (!personalInfo && window.userDataManager && window.userDataManager.hasCompletedSignup()) {
+                    const localUserData = window.userDataManager.getAllUserData();
+                    personalInfo = localUserData.personalInfo;
+                }
+
+                if (personalInfo) {
+                    // Update header user info
+                    const userAvatar = document.querySelector('.user-avatar');
+                    const userName = document.querySelector('.user-name');
+                    const welcomeMessage = document.getElementById('welcomeMessage');
+                    
+                    if (userAvatar && personalInfo.initials) {
+                        userAvatar.textContent = personalInfo.initials;
+                    }
+                    
+                    if (userName && personalInfo.fullName) {
+                        userName.textContent = personalInfo.fullName;
+                    }
+
+                    if (welcomeMessage && personalInfo.firstName) {
+                        welcomeMessage.textContent = `Welcome back, ${personalInfo.firstName}! Here's your trade overview.`;
+                    }
+                }
+
+                // Load real-time metrics
+                await loadDashboardMetrics();
                 
-                if (userName && personalInfo.fullName) {
-                    userName.textContent = personalInfo.fullName;
+            } catch (error) {
+                console.error('Error initializing user profile:', error);
+            }
+        }
+
+        // Load real-time dashboard metrics
+        async function loadDashboardMetrics() {
+            try {
+                let metrics = null;
+
+                // Try to get metrics from backend API
+                if (window.tradeBridgeAPI && window.tradeBridgeAPI.isAuthenticated()) {
+                    try {
+                        const userStats = await window.tradeBridgeAPI.getUserStats();
+                        metrics = userStats.stats;
+                    } catch (error) {
+                        console.log('Backend metrics not available, using mock data');
+                    }
+                }
+
+                // Use mock data if backend not available
+                if (!metrics) {
+                    metrics = {
+                        tradeAgreements: Math.floor(Math.random() * 15) + 5,
+                        shipments: Math.floor(Math.random() * 8) + 2,
+                        walletBalance: Math.floor(Math.random() * 50000) + 10000,
+                        walletCurrency: 'USD',
+                        unreadNotifications: Math.floor(Math.random() * 5)
+                    };
+                }
+
+                // Update dashboard widgets with real data
+                updateDashboardWidgets(metrics);
+
+                // Load activity feed
+                await loadActivityFeed();
+
+            } catch (error) {
+                console.error('Error loading dashboard metrics:', error);
+            }
+        }
+
+        // Update dashboard widgets with real data
+        function updateDashboardWidgets(metrics) {
+            // Update trade agreements widget
+            const tradeAgreementsCount = document.querySelector('.widget-stat-number');
+            if (tradeAgreementsCount) {
+                tradeAgreementsCount.textContent = metrics.tradeAgreements;
+            }
+
+            // Update wallet balance
+            const walletBalance = document.querySelector('.balance-amount');
+            if (walletBalance) {
+                walletBalance.textContent = `${metrics.walletCurrency} ${metrics.walletBalance.toLocaleString()}`;
+            }
+
+            // Update notifications badge
+            const notificationBadge = document.querySelector('.notification-badge');
+            if (notificationBadge && metrics.unreadNotifications > 0) {
+                notificationBadge.textContent = metrics.unreadNotifications;
+                notificationBadge.style.display = 'block';
+            } else if (notificationBadge) {
+                notificationBadge.style.display = 'none';
+            }
+
+            // Update shipment status
+            updateShipmentStatus(metrics.shipments);
+        }
+
+        // Update shipment status widget
+        function updateShipmentStatus(shipmentCount) {
+            const shipmentWidget = document.querySelector('.shipment-status');
+            if (shipmentWidget) {
+                const statusText = shipmentWidget.querySelector('.status-text');
+                const statusIcon = shipmentWidget.querySelector('.status-icon');
+                
+                if (shipmentCount > 0) {
+                    statusText.textContent = `${shipmentCount} active shipments`;
+                    statusIcon.textContent = '🚚';
+                } else {
+                    statusText.textContent = 'No active shipments';
+                    statusIcon.textContent = '📦';
                 }
             }
+        }
+
+        // Load activity feed with real data
+        async function loadActivityFeed() {
+            try {
+                let activities = [];
+
+                // Try to get real activities from backend
+                if (window.tradeBridgeAPI && window.tradeBridgeAPI.isAuthenticated()) {
+                    try {
+                        const notifications = await window.tradeBridgeAPI.getNotifications({ limit: 5 });
+                        activities = notifications.notifications.map(notif => ({
+                            id: notif.id,
+                            type: notif.type,
+                            title: notif.title,
+                            message: notif.message,
+                            time: notif.createdAt,
+                            icon: getActivityIcon(notif.type)
+                        }));
+                    } catch (error) {
+                        console.log('Backend activities not available, using mock data');
+                    }
+                }
+
+                // Use mock activities if backend not available
+                if (activities.length === 0) {
+                    activities = generateMockActivities();
+                }
+
+                // Update activity feed
+                updateActivityFeed(activities);
+
+            } catch (error) {
+                console.error('Error loading activity feed:', error);
+            }
+        }
+
+        // Generate mock activities for demo
+        function generateMockActivities() {
+            const now = new Date();
+            return [
+                {
+                    id: 1,
+                    type: 'trade',
+                    title: 'Trade Agreement Created',
+                    message: 'New trade agreement with ABC Corp has been created',
+                    time: new Date(now.getTime() - 2 * 60 * 60 * 1000).toISOString(),
+                    icon: '📋'
+                },
+                {
+                    id: 2,
+                    type: 'shipment',
+                    title: 'Shipment Update',
+                    message: 'Shipment #TB001234 is now in transit',
+                    time: new Date(now.getTime() - 4 * 60 * 60 * 1000).toISOString(),
+                    icon: '🚚'
+                },
+                {
+                    id: 3,
+                    type: 'payment',
+                    title: 'Payment Received',
+                    message: 'Payment of $15,000 received from XYZ Ltd',
+                    time: new Date(now.getTime() - 6 * 60 * 60 * 1000).toISOString(),
+                    icon: '💰'
+                },
+                {
+                    id: 4,
+                    type: 'invoice',
+                    title: 'Invoice Processed',
+                    message: 'Invoice INV-2024-001 has been processed',
+                    time: new Date(now.getTime() - 8 * 60 * 60 * 1000).toISOString(),
+                    icon: '📄'
+                }
+            ];
+        }
+
+        // Get activity icon based on type
+        function getActivityIcon(type) {
+            const icons = {
+                'trade': '📋',
+                'shipment': '🚚',
+                'payment': '💰',
+                'invoice': '📄',
+                'system': '🔔'
+            };
+            return icons[type] || '🔔';
+        }
+
+        // Update activity feed in the UI
+        function updateActivityFeed(activities) {
+            const activityFeed = document.querySelector('.activity-feed');
+            if (!activityFeed) return;
+
+            activityFeed.innerHTML = '';
+
+            activities.forEach(activity => {
+                const activityItem = document.createElement('div');
+                activityItem.className = 'activity-item';
+                activityItem.innerHTML = `
+                    <div class="activity-icon">${activity.icon}</div>
+                    <div class="activity-content">
+                        <div class="activity-title">${activity.title}</div>
+                        <div class="activity-message">${activity.message}</div>
+                        <div class="activity-time">${formatTimeAgo(activity.time)}</div>
+                    </div>
+                `;
+                activityFeed.appendChild(activityItem);
+            });
+        }
+
+        // Format time ago
+        function formatTimeAgo(dateString) {
+            const now = new Date();
+            const date = new Date(dateString);
+            const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
+            
+            if (diffInHours < 1) return 'Just now';
+            if (diffInHours === 1) return '1 hour ago';
+            if (diffInHours < 24) return `${diffInHours} hours ago`;
+            
+            const diffInDays = Math.floor(diffInHours / 24);
+            if (diffInDays === 1) return '1 day ago';
+            return `${diffInDays} days ago`;
+        }
+
+        // Refresh data function
+        async function refreshData() {
+            showLoadingToast('Refreshing data...');
+            await loadDashboardMetrics();
+            hideLoadingToast();
+            showToast('Data refreshed successfully!', 'success');
         }
 
         // Initialize on page load
